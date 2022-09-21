@@ -17,16 +17,14 @@ int e = 11;
 int f = 12;
 int g = 13;
 
-//Definir salidas booleanas
 
-  
 
 void setup() {
 
-  pinMode (decA, INPUT);
-  pinMode (decB, INPUT);
-  pinMode (decC, INPUT);
-  pinMode (decD, INPUT);
+  pinMode (inA, INPUT);
+  pinMode (inB, INPUT);
+  pinMode (inC, INPUT);
+  pinMode (inD, INPUT);
   
   pinMode (a, OUTPUT);
   pinMode (b, OUTPUT);
@@ -74,7 +72,7 @@ void loop() {
   Serial.println(decimal);
   Serial.println(" ");
   display(decimal);
-  delay(250);
+  delay(1);
 
   
  }           
