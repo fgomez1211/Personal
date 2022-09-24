@@ -327,12 +327,12 @@ void letraD(){
 }
 
 void letraE(){
-      digitalWrite(a, LOW);
-      digitalWrite(b, HIGH);
-      digitalWrite(c, HIGH);
+      digitalWrite(a, HIGH);
+      digitalWrite(b, LOW);
+      digitalWrite(c, LOW);
       digitalWrite(d, HIGH);
       digitalWrite(e, HIGH);
-      digitalWrite(f, LOW);
+      digitalWrite(f, HIGH);
       digitalWrite(g, HIGH);
 }
 
@@ -348,32 +348,32 @@ void letraF(){
 
 void letraG(){
       digitalWrite(a, HIGH);
-      digitalWrite(b, LOW);
-      digitalWrite(c, LOW);
-      digitalWrite(d, LOW);
-      digitalWrite(e, HIGH);
+      digitalWrite(b, HIGH);
+      digitalWrite(c, HIGH);
+      digitalWrite(d, HIGH);
+      digitalWrite(e, LOW);
       digitalWrite(f, HIGH);
       digitalWrite(g, HIGH);
 }
 
 void letraH(){
-      digitalWrite(a, HIGH);
+      digitalWrite(a, LOW);
       digitalWrite(b, LOW);
-      digitalWrite(c, LOW);
-      digitalWrite(d, LOW);
+      digitalWrite(c, HIGH);
+      digitalWrite(d, HIGH);
       digitalWrite(e, HIGH);
       digitalWrite(f, HIGH);
       digitalWrite(g, HIGH);
 }
 
 void letraI(){
-      digitalWrite(a, HIGH);
+      digitalWrite(a, LOW);
       digitalWrite(b, LOW);
-      digitalWrite(c, LOW);
+      digitalWrite(c, HIGH);
       digitalWrite(d, LOW);
-      digitalWrite(e, HIGH);
-      digitalWrite(f, HIGH);
-      digitalWrite(g, HIGH);
+      digitalWrite(e, LOW);
+      digitalWrite(f, LOW);
+      digitalWrite(g, LOW);
 }
 
 void letraJ(){
@@ -387,9 +387,9 @@ void letraJ(){
 }
 
 void letraK(){
-      digitalWrite(a, HIGH);
-      digitalWrite(b, LOW);
-      digitalWrite(c, LOW);
+      digitalWrite(a, LOW);
+      digitalWrite(b, HIGH);
+      digitalWrite(c, HIGH);
       digitalWrite(d, LOW);
       digitalWrite(e, HIGH);
       digitalWrite(f, HIGH);
