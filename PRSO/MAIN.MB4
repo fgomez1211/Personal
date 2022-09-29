@@ -1,1 +1,56 @@
+10   'Eingaenge/Inputs
+20   DEF IO ASTART   = BIT,1         'Start / start control panel
+30  DEF IO ASTOP    = BIT,2         'Stop / stop control panel
+40  DEF IO RRESET   = BIT,4         'Richten / reset control panel
+50  'Ausgaenge/Outputs
+60  DEF IO HSTART   = BIT,0         'Lampe Start / lamp start control panel
+70  DEF IO HRESET   = BIT,1         'Lampe Richen / lamp reset control panel
+80  DEF IO LEDQ1    = BIT,2         'Lampe Q1 / lamp Q1 control panel
+90  DEF IO LEDQ2    = BIT,3         'Lampe Q2 / lamp Q2 control panel
 
+100 M_CNCNR = 0                                           'Clear CNC not ready variable
+110 HSTART = 0                                            'Reset start lamp
+120 HRESET = 0                                            'Reset reset lamp
+130 M_OUTW(32) = 0                                         'Reset outputword 32 (Out32-Out39)
+140 M_OUTW(40) = 0                                         'Reset outputword 40 (Out40-Out47)
+
+
+150 *LOOP2
+160 HRESET = 1                                            'Light up reset LED on control panel
+170 DLY 0.5                                               'Delay 0.5 s
+180 HRESET = 0                                            'Turn off reset LED on control panel
+190 DLY 0.5                                               'Delay 0.5 s
+200 IF RRESET = 0 THEN GOTO *LOOP2                        'If reset button is pushed then jump to label *LOOP2
+210 HRESET = 0                                            'Light up reset LED on control panel
+220 CALLP"CNCDRV40","RESET" 
+230 CALLP"CNCDRV32","RESET" 
+240 MOV PINIT
+
+250 *LOOP3
+260 HSTART = 1                                            'Light up start LED on control panel
+270 DLY 0.5                                               'Delay 0.5 s
+280 HSTART = 0                                            'Turn off start LED on control panel
+290 DLY 0.5                                               'Delay 0.5 s
+300 IF ASTART = 0 THEN GOTO *LOOP3                        'If button start on control panel is not pushed jump to label *LOOP3
+310 HSTART = 0                                            'Light up start LED on control panel
+
+
+
+320 CALLP "PB1"
+
+460 M_00 = 2
+470 M_01 = 5
+480 CALLP "MOVE"
+490 CALLP"CNCDRV32","RUNPR" 
+500 M_00 = 5
+510 M_01 = 4
+520 CALLP "MOVE"
+530 CALLP"CNCDRV40","RUNPR" 
+540 M_00 = 4
+550 M_01 = 3
+560 CALLP "MOVE"
+
+570 CALLP "CDTURN"
+580 CALLP "CDMILL"
+
+590 END
