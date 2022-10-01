@@ -3,19 +3,19 @@
 30  '|------------------------------------------------------------------------------------------------------------------|
 
 40  'Entradas
-50  DEF IO ASTART   = BIT,1         'Start / start control panel
-60  DEF IO ASTOP    = BIT,2         'Stop / stop control panel
-70  DEF IO RRESET   = BIT,4         'Richten / reset control panel
+50  DEF IO ASTART   = BIT,1         'Start / Botón de Start en el Panel de Control
+60  DEF IO ASTOP    = BIT,2         'Stop / Botón de Stop en el Panel de Control
+70  DEF IO RRESET   = BIT,4         'Richten / Botón de Reset en el Panel de Control
 
 80  'Salidas
-90  DEF IO HSTART   = BIT,0         'Lampe Start / lamp start control panel
-100  DEF IO HRESET   = BIT,1         'Lampe Richen / lamp reset control panel
-110  DEF IO LEDQ1    = BIT,2         'Lampe Q1 / lamp Q1 control panel
-120  DEF IO LEDQ2    = BIT,3         'Lampe Q2 / lamp Q2 control panel
+90  DEF IO HSTART   = BIT,0         'Luz Piloto de Start en el Panel de Control
+100  DEF IO HRESET   = BIT,1        'Luz Piloto de Reset en el Panel de Control
+110  DEF IO LEDQ1    = BIT,2        'Luz Piloto Q1
+120  DEF IO LEDQ2    = BIT,3        'Luz Piloto Q2
 
 
 130  '|------------------------------------------------------------------------------------------------------------------|
-140  '|  RUTINA PARA                                                                                          |
+140  '|  DECLARACION DE VARIABLES DE ESTADO DEL CNC, LUCES PILOTO DE START Y RESET.                                                                                          |
 150  '|------------------------------------------------------------------------------------------------------------------|
 
 
@@ -26,44 +26,50 @@
 200 M_OUTW(40) = 0                                         'Reset outputword 40 (Out40-Out47)
 
 
-210 *LOOP2
-220 HRESET = 1                                            'Light up reset LED on control panel
-230 DLY 0.5                                               'Delay 0.5 s
-240 HRESET = 0                                            'Turn off reset LED on control panel
-250 DLY 0.5                                               'Delay 0.5 s
-260 IF RRESET = 0 THEN GOTO *LOOP2                        'If reset button is pushed then jump to label *LOOP2
-270 HRESET = 0                                            'Light up reset LED on control panel
-280 CALLP"CNCDRV40","RESET" 
-290 CALLP"CNCDRV32","RESET" 
-300 MOV PINIT
+210  '|------------------------------------------------------------------------------------------------------------------|
+220  '|  LA SECCIÓN LOOP2 INICIA UNA SECUENCIA DE PARPADEO EN LA LUZ DE RESET. PARA PONER EL SISTEMA EN DISPONIBILIDAD
+230  '|  SE DEBE DE PRESIONAR EL BOTON DE RESET.                                                                         |
+240  '|------------------------------------------------------------------------------------------------------------------|
+
+
+250 *LOOP2
+260 HRESET = 1                                            'Light up reset LED on control panel
+270 DLY 0.5                                               'Delay 0.5 s
+280 HRESET = 0                                            'Turn off reset LED on control panel
+290 DLY 0.5                                               'Delay 0.5 s
+300 IF RRESET = 0 THEN GOTO *LOOP2                        'If reset button is pushed then jump to label *LOOP2
+310 HRESET = 0                                            'Light up reset LED on control panel
+320 CALLP"CNCDRV40","RESET" 
+330 CALLP"CNCDRV32","RESET" 
+340 MOV PINIT
 
 
 
-310 *LOOP3
-320 HSTART = 1                                            'Light up start LED on control panel
-330 DLY 0.5                                               'Delay 0.5 s
-340 HSTART = 0                                            'Turn off start LED on control panel
-350 DLY 0.5                                               'Delay 0.5 s
-360 IF ASTART = 0 THEN GOTO *LOOP3                        'If button start on control panel is not pushed jump to label *LOOP3
-370 HSTART = 0                                            'Light up start LED on control panel
+350 *LOOP3
+360 HSTART = 1                                            'Light up start LED on control panel
+370 DLY 0.5                                               'Delay 0.5 s
+380 HSTART = 0                                            'Turn off start LED on control panel
+390 DLY 0.5                                               'Delay 0.5 s
+400 IF ASTART = 0 THEN GOTO *LOOP3                        'If button start on control panel is not pushed jump to label *LOOP3
+410 HSTART = 0                                            'Light up start LED on control panel
 
 
 
-380 CALLP "PB1"
+420 CALLP "PB1"
 
-390 M_00 = 2
-400 M_01 = 5
-410 CALLP "MOVE"
-420 CALLP"CNCDRV32","RUNPR" 
-430 M_00 = 5
-440 M_01 = 4
+430 M_00 = 2
+440 M_01 = 5
 450 CALLP "MOVE"
-460 CALLP"CNCDRV40","RUNPR" 
-470 M_00 = 4
-480 M_01 = 3
+460 CALLP"CNCDRV32","RUNPR" 
+470 M_00 = 5
+480 M_01 = 4
 490 CALLP "MOVE"
+500 CALLP"CNCDRV40","RUNPR" 
+510 M_00 = 4
+520 M_01 = 3
+530 CALLP "MOVE"
 
-500 CALLP "CDTURN"
-510 CALLP "CDMILL"
+540 CALLP "CDTURN"
+550 CALLP "CDMILL"
 
-520 END
+560 END
