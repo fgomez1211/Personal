@@ -19,57 +19,78 @@
 150  '|------------------------------------------------------------------------------------------------------------------|
 
 
-160 M_CNCNR = 0                                           'Clear CNC not ready variable
-170 HSTART = 0                                            'Reset start lamp
-180 HRESET = 0                                            'Reset reset lamp
-190 M_OUTW(32) = 0                                         'Reset outputword 32 (Out32-Out39)
-200 M_OUTW(40) = 0                                         'Reset outputword 40 (Out40-Out47)
+160 M_CNCNR = 0                                           'Variable de Disponibilidad del CNC
+170 HSTART = 0                                            'Luz Piloto de Start inicia en 0
+180 HRESET = 0                                            'Luz Piloto de Reset inicia en 0
+190 M_OUTW(32) = 0                                        'Reset outputword 32 (Out32-Out39)
+200 M_OUTW(40) = 0                                        'Reset outputword 40 (Out40-Out47)
 
 
 210  '|------------------------------------------------------------------------------------------------------------------|
-220  '|  LA SECCIÓN LOOP2 INICIA UNA SECUENCIA DE PARPADEO EN LA LUZ DE RESET. PARA PONER EL SISTEMA EN DISPONIBILIDAD
-230  '|  SE DEBE DE PRESIONAR EL BOTON DE RESET.                                                                         |
+220  '|  LA SECCIÓN LOOP2 INICIA UNA SECUENCIA DE PARPADEO EN LA LUZ DE RESET. PARA PONER EL SISTEMA EN DISPONIBILIDAD   |
+230  '|  SE DEBE DE PRESIONAR EL BOTON DE RESET. EL PARPADEO CONTINUARA HASTA QUE SE PRESIONE EL BOTON                   |
 240  '|------------------------------------------------------------------------------------------------------------------|
 
 
 250 *LOOP2
-260 HRESET = 1                                            'Light up reset LED on control panel
+260 HRESET = 1                                            'Luz Piloto de Start se enciende en el panel de control
 270 DLY 0.5                                               'Delay 0.5 s
-280 HRESET = 0                                            'Turn off reset LED on control panel
+280 HRESET = 0                                            'Luz Piloto de Start se apaga en el panel de control
 290 DLY 0.5                                               'Delay 0.5 s
-300 IF RRESET = 0 THEN GOTO *LOOP2                        'If reset button is pushed then jump to label *LOOP2
-310 HRESET = 0                                            'Light up reset LED on control panel
-320 CALLP"CNCDRV40","RESET" 
-330 CALLP"CNCDRV32","RESET" 
-340 MOV PINIT
+300 IF RRESET = 0 THEN GOTO *LOOP2                        'Si el boton de Reset no ha sido presionado, el programa continua en el Loop 2.
+310 HRESET = 0                                            'Si se presiona el boton de Reset: se apaga la luz piloto de reset.
+320 CALLP"CNCDRV40","RESET" 							  'Corre el programa del Torno y el programa Reset
+330 CALLP"CNCDRV32","RESET" 						      'Corre el programa de la Fresa y el programa Reset
+340 MOV PINIT											  'Se mueve el brazo a la posición PINIT
+
+
+350  '|------------------------------------------------------------------------------------------------------------------|
+360  '|  LA SECCIÓN LOOP3 INICIA UNA SECUENCIA DE PARPADEO EN LA LUZ DE START. ESTO PARA INDICAR QUE EL SISTEMA ESTA EN  |
+370  '|  EN DISPONIBILIDAD. PARA INICIAR EL PROGRAMA SE DEBE DE PRESIONAR EL BOTON DE START.                             |
+380  '|------------------------------------------------------------------------------------------------------------------|
 
 
 
-350 *LOOP3
-360 HSTART = 1                                            'Light up start LED on control panel
-370 DLY 0.5                                               'Delay 0.5 s
-380 HSTART = 0                                            'Turn off start LED on control panel
-390 DLY 0.5                                               'Delay 0.5 s
-400 IF ASTART = 0 THEN GOTO *LOOP3                        'If button start on control panel is not pushed jump to label *LOOP3
-410 HSTART = 0                                            'Light up start LED on control panel
+390 *LOOP3
+400 HSTART = 1                                            'Light up start LED on control panel
+410 DLY 0.5                                               'Delay 0.5 s
+420 HSTART = 0                                            'Turn off start LED on control panel
+430 DLY 0.5                                               'Delay 0.5 s
+440 IF ASTART = 0 THEN GOTO *LOOP3                        'If button start on control panel is not pushed jump to label *LOOP3
+450 HSTART = 0                                            'Light up start LED on control panel
 
 
 
-420 CALLP "PB1"
 
-430 M_00 = 2
-440 M_01 = 5
-450 CALLP "MOVE"
-460 CALLP"CNCDRV32","RUNPR" 
-470 M_00 = 5
-480 M_01 = 4
-490 CALLP "MOVE"
-500 CALLP"CNCDRV40","RUNPR" 
-510 M_00 = 4
-520 M_01 = 3
-530 CALLP "MOVE"
 
-540 CALLP "CDTURN"
-550 CALLP "CDMILL"
+460 CALLP "PB1"
 
-560 END
+470  '|------------------------------------------------------------------------------------------------------------------|
+480  '|  LA SIGUIENTE SECCION CONTROLA LA OPERACION DE LA BANDA TRANSPORTADORA 2.
+490  '|  
+500  '|  LOS BITS DE MEMORIA M_00 Y M_01 INDICAN LA POSICION INICIAL Y FINAL DEL OBJETO RESPECTIVAMENTE.
+510  '|  LA SECUENCIA INICIA COLOCANDO EL BIT DE INICIO EN 2 (BANDA TRANSPORTADORA 2) Y LO MUEVE A LA 5 (FRESADORA)
+520  '|  CON ESTOS BITS (VARIABLES GLOBALES) SE EJECUTA EL PROGRAMA MOVE EL CUAL SE ENCARGA DE MOVER LAS PIEZAS ENTRE
+530  '|  POSICIONES SEGUN LOS DATOS EN LAS VARIABLES GLOBALES.
+540  '|  UNA VEZ FINALIZADA LA SECUENCIA DE LA FRESADORA, LA PIEZA ES LLEVADA DE LA POSICIÓN 5(FRESADORA) HACIA LA 4 (TORNO)
+550  '|  CUANDO FINALIZA EL PROGRAMA DEL TORNO, LA PIEZA ES LLEVADA DE LA POSICIÓN 4(TORNO) HACIA LA 3 (BANDA TRANSPORTADORA 3)
+560  '|------------------------------------------------------------------------------------------------------------------|
+
+
+
+570 M_00 = 2										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 2 = BANDA TRANSPORTADORA 2
+580 M_01 = 5										'INDICA EL DESTINO. 5 = FRESADORA
+590 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
+600 CALLP"CNCDRV32","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV32 EL CUAL CORRESPONDE A LA FRESADORA
+610 M_00 = 5										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 5 = FRESADORA
+620 M_01 = 4										'INDICA EL DESTINO. 4 = TORNO
+630 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
+640 CALLP"CNCDRV40","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV40 EL CUAL CORRESPONDE AL TORNO
+650 M_00 = 4										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 4 = TORNO
+660 M_01 = 3										'INDICA EL DESTINO. 3 = BANDA TRANSPORADORA 3
+670 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
+
+680 CALLP "CDTURN"									'EL PROGRAMA CDTURN CIERRA LA PUERTA DEL TORNO
+690 CALLP "CDMILL"									'EL PROGRAMA CDMILL CIERRA LA PUERTA DE LA FRESADORA
+
+700 END												'FINALIZA EL PROGRAMA
