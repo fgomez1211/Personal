@@ -1,24 +1,33 @@
-10 M_00 = 1
-20 M_01 = 4
-30 CALLP "MOVE"
-40 CALLP"CNCDRV40","RUNPR"
+10 'Mueve la pieza de la banda transportadora 1 hacia el torno
+
+20 M_00 = 1
+30 M_01 = 4
+40 CALLP "MOVE"
+50 CALLP"CNCDRV40","RUNPR"
+
+60 'Mueve la pieza del torno hacia la fresadora
+
+70 M_00 = 4
+80 M_01 = 5
+90 CALLP "MOVE"
+100 CALLP"CNCDRV32","RUNPR"
+
+110 'Mueve la pieza de la fresadora hacia la banda transportadora 1
+
+120 M_00 = 5
+130 M_01 = 1
+140 CALLP "MOVE"
+
+150 'Toma la pieza y la mueve de nuevo a hacia la fresadora, girandola 180 grados
+160 'Para esto se creo el programa MOVE2, el cual solo cambia en la posición final de la pieza.
+170 M_00 = 1
+180 M_01 = 5
+190 CALLP "MOVE2"
+200 CALLP"CNCDRV32","RUNPR"
 
 
-60 M_00 = 4
-70 M_01 = 5
-80 CALLP "MOVE"
-90 CALLP"CNCDRV32","RUNPR"
-
-60 M_00 = 5
-70 M_01 = 4
-80 CALLP "MOVE"
-
-60 M_00 = 4
-70 M_01 = 5
-80 CALLP "MOVE2"
-90 CALLP"CNCDRV32","RUNPR"
-
-140 
-150 M_00 = 5
-160 M_01 = 3
-170 CALLP "MOVE"
+210 'Mueve la pieza de la fresa hacia la banda transportadora 3
+220 
+230 M_00 = 5
+240 M_01 = 3
+250 CALLP "MOVE"
