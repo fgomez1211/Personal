@@ -63,62 +63,66 @@
 
 460  '|------------------------------------------------------------------------------------------------------------------|
 470  '|  El siguiene sección controla la operación de la banda transportadora 1.
-480  '|  Los bits de MEmoria M_001 y M_002 indican la posición inicial y final del objeto respectivamente.
-490  '|  La secuencia inicia colocando el bit de inicio en la Banda Transportadora 1 y lo mueve a la 4 (Torno).
-500  '|  Una vez finaliza, lo lleva a la fresadora (5). Finalizada la secuencia de la fresa, mueve la pieza en la banda
-510  '|  transportadora 1. Luego, lo mueve de nuevo a la fresadora pero usando el programa MOVE2, el cual tiene cambiado
-520  '|  el parametro de la posición del efector final, el cual esta rotado 180° para que la pieza pueda ser maquinada en
-530  '|  el otro extremo. Una vez finalizado el segundo proceso, la pieza es llevada a la banda transportadora 3 (salida).
-540  '|------------------------------------------------------------------------------------------------------------------|
+480  '|  
+490  '|  Los bits de MEmoria M_001 y M_002 indican la posición inicial y final del objeto respectivamente.
+500  '|  La secuencia inicia colocando el bit de inicio en la Banda Transportadora 1 y lo mueve a la 4 (Torno).
+510  '|  Una vez finaliza, lo lleva a la fresadora (5). Finalizada la secuencia de la fresa, mueve la pieza en la banda
+520  '|  transportadora 1. Luego, lo mueve de nuevo a la fresadora pero usando el programa MOVE2, el cual tiene cambiado
+530  '|  el parametro de la posición del efector final, el cual esta rotado 180° para que la pieza pueda ser maquinada en
+540  '|  el otro extremo. Una vez finalizado el segundo proceso, la pieza es llevada a la banda transportadora 3 (salida).
+550  '|  
+560  '|  Cabe mencionar que esto cumple con el objetivo de maquinar la pieza por segunda vez si la pieza habia sido
+570  '|  anteriormente torneada y fresada, en ese orden.
+580  '|------------------------------------------------------------------------------------------------------------------|
 
 
-550 M_00 = 1										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 1 = BANDA TRANSPORTADORA 1
-560 M_01 = 4										'INDICA EL DESTINO. 4 = TORNO
-570 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
-580 CALLP"CNCDRV40","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV40 EL CUAL CORRESPONDE AL TORNO
-590 M_00 = 4										'INDICA EL ORIGEN. 4 = TORNO
-600 M_01 = 5										'INDICA EL DESTINO. 5 = FRESADORA
+590 M_00 = 1										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 1 = BANDA TRANSPORTADORA 1
+600 M_01 = 4										'INDICA EL DESTINO. 4 = TORNO
 610 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
-620 CALLP"CNCDRV32","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV32 EL CUAL CORRESPONDE A LA FRESADORA
-630 M_00 = 5										'INDICA EL ORIGEN. 5 = FRESADORA
-640 M_01 = 1										'INDICA EL DESTINO DE LA PIEZA. 1 = BANDA TRANSPORTADORA 1
+620 CALLP"CNCDRV40","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV40 EL CUAL CORRESPONDE AL TORNO
+630 M_00 = 4										'INDICA EL ORIGEN. 4 = TORNO
+640 M_01 = 5										'INDICA EL DESTINO. 5 = FRESADORA
 650 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
-660 M_00 = 1										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 1 = BANDA TRANSPORTADORA 
-670 M_01 = 5										'INDICA EL DESTINO. 5 = FRESADORA. 2DA VUELTA
-680 CALLP "MOVE2"									'EJECUTA MOVE2 EL CUAL MUEVE LA PIEZA A LA FRESADORA CON LA POSICION FINAL INVERTIDA 180°
-690 CALLP"CNCDRV32","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV32 EL CUAL CORRESPONDE A LA FRESADORA
-700 M_00 = 5										'INDICA EL ORIGEN. 5 = FRESADORA
-710 M_01 = 3										'INDICA EL DESTINO. 3 = BANDA TRANSPORADORA 3
-720 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
+660 CALLP"CNCDRV32","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV32 EL CUAL CORRESPONDE A LA FRESADORA
+670 M_00 = 5										'INDICA EL ORIGEN. 5 = FRESADORA
+680 M_01 = 1										'INDICA EL DESTINO DE LA PIEZA. 1 = BANDA TRANSPORTADORA 1
+690 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
+700 M_00 = 1										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 1 = BANDA TRANSPORTADORA 
+710 M_01 = 5										'INDICA EL DESTINO. 5 = FRESADORA. 2DA VUELTA
+720 CALLP "MOVE2"									'EJECUTA MOVE2 EL CUAL MUEVE LA PIEZA A LA FRESADORA CON LA POSICION FINAL INVERTIDA 180°
+730 CALLP"CNCDRV32","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV32 EL CUAL CORRESPONDE A LA FRESADORA
+740 M_00 = 5										'INDICA EL ORIGEN. 5 = FRESADORA
+750 M_01 = 3										'INDICA EL DESTINO. 3 = BANDA TRANSPORADORA 3
+760 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
 
 
 
-730  '|------------------------------------------------------------------------------------------------------------------|
-740  '|  LA SIGUIENTE SECCION CONTROLA LA OPERACION DE LA BANDA TRANSPORTADORA 2.
-750  '|  
-760  '|  LOS BITS DE MEMORIA M_00 Y M_01 INDICAN LA POSICION INICIAL Y FINAL DEL OBJETO RESPECTIVAMENTE.
-770  '|  LA SECUENCIA INICIA COLOCANDO EL BIT DE INICIO EN 2 (BANDA TRANSPORTADORA 2) Y LO MUEVE A LA 5 (FRESADORA)
-780  '|  CON ESTOS BITS (VARIABLES GLOBALES) SE EJECUTA EL PROGRAMA MOVE EL CUAL SE ENCARGA DE MOVER LAS PIEZAS ENTRE
-790  '|  POSICIONES SEGUN LOS DATOS EN LAS VARIABLES GLOBALES.
-800  '|  UNA VEZ FINALIZADA LA SECUENCIA DE LA FRESADORA, LA PIEZA ES LLEVADA DE LA POSICIÓN 5(FRESADORA) HACIA LA 4 (TORNO)
-810  '|  CUANDO FINALIZA EL PROGRAMA DEL TORNO, LA PIEZA ES LLEVADA DE LA POSICIÓN 4(TORNO) HACIA LA 3 (BANDA TRANSPORTADORA 3)
-820  '|------------------------------------------------------------------------------------------------------------------|
+770  '|------------------------------------------------------------------------------------------------------------------|
+780  '|  LA SIGUIENTE SECCION CONTROLA LA OPERACION DE LA BANDA TRANSPORTADORA 2.
+790  '|  
+800  '|  LOS BITS DE MEMORIA M_00 Y M_01 INDICAN LA POSICION INICIAL Y FINAL DEL OBJETO RESPECTIVAMENTE.
+810  '|  LA SECUENCIA INICIA COLOCANDO EL BIT DE INICIO EN 2 (BANDA TRANSPORTADORA 2) Y LO MUEVE A LA 5 (FRESADORA)
+820  '|  CON ESTOS BITS (VARIABLES GLOBALES) SE EJECUTA EL PROGRAMA MOVE EL CUAL SE ENCARGA DE MOVER LAS PIEZAS ENTRE
+830  '|  POSICIONES SEGUN LOS DATOS EN LAS VARIABLES GLOBALES.
+840  '|  UNA VEZ FINALIZADA LA SECUENCIA DE LA FRESADORA, LA PIEZA ES LLEVADA DE LA POSICIÓN 5(FRESADORA) HACIA LA 4 (TORNO)
+850  '|  CUANDO FINALIZA EL PROGRAMA DEL TORNO, LA PIEZA ES LLEVADA DE LA POSICIÓN 4(TORNO) HACIA LA 3 (BANDA TRANSPORTADORA 3)
+860  '|------------------------------------------------------------------------------------------------------------------|
 
 
 
-830 M_00 = 2										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 2 = BANDA TRANSPORTADORA 2
-840 M_01 = 5										'INDICA EL DESTINO. 5 = FRESADORA
-850 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
-860 CALLP"CNCDRV32","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV32 EL CUAL CORRESPONDE A LA FRESADORA
-870 M_00 = 5										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 5 = FRESADORA
-880 M_01 = 4										'INDICA EL DESTINO. 4 = TORNO
+870 M_00 = 2										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 2 = BANDA TRANSPORTADORA 2
+880 M_01 = 5										'INDICA EL DESTINO. 5 = FRESADORA
 890 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
-900 CALLP"CNCDRV40","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV40 EL CUAL CORRESPONDE AL TORNO
-910 M_00 = 4										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 4 = TORNO
-920 M_01 = 3										'INDICA EL DESTINO. 3 = BANDA TRANSPORADORA 3
+900 CALLP"CNCDRV32","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV32 EL CUAL CORRESPONDE A LA FRESADORA
+910 M_00 = 5										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 5 = FRESADORA
+920 M_01 = 4										'INDICA EL DESTINO. 4 = TORNO
 930 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
+940 CALLP"CNCDRV40","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV40 EL CUAL CORRESPONDE AL TORNO
+950 M_00 = 4										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 4 = TORNO
+960 M_01 = 3										'INDICA EL DESTINO. 3 = BANDA TRANSPORADORA 3
+970 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
 
-940 CALLP "CDTURN"									'EL PROGRAMA CDTURN CIERRA LA PUERTA DEL TORNO
-950 CALLP "CDMILL"									'EL PROGRAMA CDMILL CIERRA LA PUERTA DE LA FRESADORA
+980 CALLP "CDTURN"									'EL PROGRAMA CDTURN CIERRA LA PUERTA DEL TORNO
+990 CALLP "CDMILL"									'EL PROGRAMA CDMILL CIERRA LA PUERTA DE LA FRESADORA
 
-960 END												'FINALIZA EL PROGRAMA
+1000 END												'FINALIZA EL PROGRAMA
