@@ -33,15 +33,15 @@
 
 
 250 *LOOP2
-260 HRESET = 1                                            'Luz Piloto de Start se enciende en el panel de control
+260 HRESET = 1                                            'Luz Piloto de Reset se enciende en el panel de control
 270 DLY 0.5                                               'Delay 0.5 s
-280 HRESET = 0                                            'Luz Piloto de Start se apaga en el panel de control
+280 HRESET = 0                                            'Luz Piloto de Reset se apaga en el panel de control
 290 DLY 0.5                                               'Delay 0.5 s
 300 IF RRESET = 0 THEN GOTO *LOOP2                        'Si el boton de Reset no ha sido presionado, el programa continua en el Loop 2.
 310 HRESET = 0                                            'Si se presiona el boton de Reset: se apaga la luz piloto de reset.
-320 CALLP"CNCDRV40","RESET" 							  'Corre el programa del Torno y el programa Reset
-330 CALLP"CNCDRV32","RESET" 						      'Corre el programa de la Fresa y el programa Reset
-340 MOV PINIT											  'Se mueve el brazo a la posición PINIT
+320 CALLP"CNCDRV40","RESET" 								   'Corre el programa del Torno y el programa Reset
+330 CALLP"CNCDRV32","RESET" 						     	   'Corre el programa de la Fresa y el programa Reset
+340 MOV PINIT												   'Se mueve el brazo a la posición PINIT
 
 
 350  '|------------------------------------------------------------------------------------------------------------------|
@@ -52,45 +52,53 @@
 
 
 390 *LOOP3
-400 HSTART = 1                                            'Light up start LED on control panel
+400 HSTART = 1                                            'Luz Piloto de Start se enciende en el panel de control
 410 DLY 0.5                                               'Delay 0.5 s
-420 HSTART = 0                                            'Turn off start LED on control panel
+420 HSTART = 0                                            'Luz Piloto de Start se apaga en el panel de control
 430 DLY 0.5                                               'Delay 0.5 s
 440 IF ASTART = 0 THEN GOTO *LOOP3                        'If button start on control panel is not pushed jump to label *LOOP3
-450 HSTART = 0                                            'Light up start LED on control panel
+450 HSTART = 0                                            'Luz Piloto de Start en el Panel de Control se apaga
 
 
 
-
-
-460 CALLP "PB1"
-
-470  '|------------------------------------------------------------------------------------------------------------------|
-480  '|  LA SIGUIENTE SECCION CONTROLA LA OPERACION DE LA BANDA TRANSPORTADORA 2.
+460  '|------------------------------------------------------------------------------------------------------------------|
+470  '|  El siguiene sección controla la operación de la banda transportadora 1.
+480  '|  
 490  '|  
-500  '|  LOS BITS DE MEMORIA M_00 Y M_01 INDICAN LA POSICION INICIAL Y FINAL DEL OBJETO RESPECTIVAMENTE.
-510  '|  LA SECUENCIA INICIA COLOCANDO EL BIT DE INICIO EN 2 (BANDA TRANSPORTADORA 2) Y LO MUEVE A LA 5 (FRESADORA)
-520  '|  CON ESTOS BITS (VARIABLES GLOBALES) SE EJECUTA EL PROGRAMA MOVE EL CUAL SE ENCARGA DE MOVER LAS PIEZAS ENTRE
-530  '|  POSICIONES SEGUN LOS DATOS EN LAS VARIABLES GLOBALES.
-540  '|  UNA VEZ FINALIZADA LA SECUENCIA DE LA FRESADORA, LA PIEZA ES LLEVADA DE LA POSICIÓN 5(FRESADORA) HACIA LA 4 (TORNO)
-550  '|  CUANDO FINALIZA EL PROGRAMA DEL TORNO, LA PIEZA ES LLEVADA DE LA POSICIÓN 4(TORNO) HACIA LA 3 (BANDA TRANSPORTADORA 3)
-560  '|------------------------------------------------------------------------------------------------------------------|
+
+500 CALLP "PB1"
 
 
 
-570 M_00 = 2										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 2 = BANDA TRANSPORTADORA 2
-580 M_01 = 5										'INDICA EL DESTINO. 5 = FRESADORA
-590 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
-600 CALLP"CNCDRV32","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV32 EL CUAL CORRESPONDE A LA FRESADORA
-610 M_00 = 5										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 5 = FRESADORA
-620 M_01 = 4										'INDICA EL DESTINO. 4 = TORNO
+
+
+
+510  '|------------------------------------------------------------------------------------------------------------------|
+520  '|  LA SIGUIENTE SECCION CONTROLA LA OPERACION DE LA BANDA TRANSPORTADORA 2.
+530  '|  
+540  '|  LOS BITS DE MEMORIA M_00 Y M_01 INDICAN LA POSICION INICIAL Y FINAL DEL OBJETO RESPECTIVAMENTE.
+550  '|  LA SECUENCIA INICIA COLOCANDO EL BIT DE INICIO EN 2 (BANDA TRANSPORTADORA 2) Y LO MUEVE A LA 5 (FRESADORA)
+560  '|  CON ESTOS BITS (VARIABLES GLOBALES) SE EJECUTA EL PROGRAMA MOVE EL CUAL SE ENCARGA DE MOVER LAS PIEZAS ENTRE
+570  '|  POSICIONES SEGUN LOS DATOS EN LAS VARIABLES GLOBALES.
+580  '|  UNA VEZ FINALIZADA LA SECUENCIA DE LA FRESADORA, LA PIEZA ES LLEVADA DE LA POSICIÓN 5(FRESADORA) HACIA LA 4 (TORNO)
+590  '|  CUANDO FINALIZA EL PROGRAMA DEL TORNO, LA PIEZA ES LLEVADA DE LA POSICIÓN 4(TORNO) HACIA LA 3 (BANDA TRANSPORTADORA 3)
+600  '|------------------------------------------------------------------------------------------------------------------|
+
+
+
+610 M_00 = 2										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 2 = BANDA TRANSPORTADORA 2
+620 M_01 = 5										'INDICA EL DESTINO. 5 = FRESADORA
 630 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
-640 CALLP"CNCDRV40","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV40 EL CUAL CORRESPONDE AL TORNO
-650 M_00 = 4										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 4 = TORNO
-660 M_01 = 3										'INDICA EL DESTINO. 3 = BANDA TRANSPORADORA 3
+640 CALLP"CNCDRV32","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV32 EL CUAL CORRESPONDE A LA FRESADORA
+650 M_00 = 5										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 5 = FRESADORA
+660 M_01 = 4										'INDICA EL DESTINO. 4 = TORNO
 670 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
+680 CALLP"CNCDRV40","RUNPR" 						'EJECUTA EL PROGRAMA CNDRV40 EL CUAL CORRESPONDE AL TORNO
+690 M_00 = 4										'INDICA LA POSICION DE ORIGEN DE LA PIEZA. 4 = TORNO
+700 M_01 = 3										'INDICA EL DESTINO. 3 = BANDA TRANSPORADORA 3
+710 CALLP "MOVE"									'EJECUTA EL PROGRAMA MOVE
 
-680 CALLP "CDTURN"									'EL PROGRAMA CDTURN CIERRA LA PUERTA DEL TORNO
-690 CALLP "CDMILL"									'EL PROGRAMA CDMILL CIERRA LA PUERTA DE LA FRESADORA
+720 CALLP "CDTURN"									'EL PROGRAMA CDTURN CIERRA LA PUERTA DEL TORNO
+730 CALLP "CDMILL"									'EL PROGRAMA CDMILL CIERRA LA PUERTA DE LA FRESADORA
 
-700 END												'FINALIZA EL PROGRAMA
+740 END												'FINALIZA EL PROGRAMA
