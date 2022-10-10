@@ -1,0 +1,370 @@
+'-------------------------------------------------
+'PROGRAMA NO.2 - PALETIZADO
+'-------------------------------------------------
+
+OVRD 10
+DEF PLT 1,P50,P51,P52,P53,2,4,1
+*INICIO
+	MOV P99
+	HOPEN 1
+	DLY 1
+	WAIT M_IN(3)=1
+	FOR X=1 TO 8
+		P400=(PLT 1,X)
+		MOV P400, -50	'RUTINA PARA ACERCARSE, BAJAR Y SUBIR CON LA PIEZA PLT 1
+		MVS P400
+		DLY 1
+		HCLOSE 1
+		DLY 1
+		MVS P400, -50
+		MOV P201, -50	'RUTINA PARA ACERCARSE, BAJAR Y SOLTAR LA PIEZA PLT 1
+		MVS P201
+		DLY 1
+		HOPEN 1
+		DLY 1
+		MVS P201, -50
+	NEXT X	
+GOTO *INICIO
+END
+
+
+
+
+
+
+'-------------------------------------------------
+'PROGRAMA NO.3 - BASE Y PALETIZADO
+'-------------------------------------------------
+
+OVRD 10
+DEF PLT 1,P50,P51,P52,P53,2,4,1
+*INICIO
+	MOV P99
+	HOPEN 1
+	DLY 1
+	WAIT M_IN(3)=1
+	FOR X=1 TO 8
+		WAIT M_IN(2)=1
+		MOV P1, -50	'INICIA RUTINA PARA ACERCARSE A P1, TOMAR LA PIEZA Y SUBIR
+		DLY 1
+		MVS P1
+		DLY 1
+		HCLOSE 1
+		DLY 1
+		MVS P1, -50
+	
+		MOV P200, -50	'INICIA RUTINA PARA ACERCARSE A P200, DEPOSITAR LA PIEZA Y SUBIR
+		MVS P200
+		DLY 1
+		HOPEN 1
+		DLY 1
+		MVS P200, -100
+		
+		P400=(PLT 1,X)	'INICIA RUTINA DE PALETIZADO
+		MOV P400, -50	'RUTINA PARA ACERCARSE, BAJAR Y SUBIR CON LA PIEZA PLT 1
+		MVS P400
+		DLY 1
+		HCLOSE 1
+		DLY 1
+		MVS P400, -50
+		
+		MOV P210, -50	'RUTINA PARA INTEGRAR LA PIEZA DEL PALETIZADO
+		MVS P210
+		DLY 1
+		HOPEN 1
+		DLY 1
+		MVS P210, -50
+		
+		MOV P200, -50	'RUTINA PARA BAJAR POR LA PIEZA INTEGRADA Y SUBIR
+		MVS P200
+		DLY 1
+		HCLOSE 1
+		DLY 1
+		MVS P200, -50
+		MOV P99		'SE MUEVE A HOME PARA EVITAR OBSTACULOS
+		
+		MOV P6, -50	'RUTINA PARA LLEVAR LA PIEZA INTEGRADA HACIA LA SALIDA, BAJAR Y SOLTARLA.
+		MVS P6
+		DLY 1
+		HOPEN 1
+		DLY 1
+		MVS P6, -50
+	
+		
+	NEXT X
+		
+	
+GOTO *INICIO
+END
+
+
+
+
+'-------------------------------------------------
+'PROGRAMA NO.4 -  BASE, PALETIZADO Y RESORTE
+'-------------------------------------------------
+
+
+OVRD 80
+SPD 150
+
+DEF IO START = BIT,3
+DEF IO SRENTRADA = BIT,2
+DEF PLT 1,P50,P51,P52,P53,2,4,1
+X=1
+WAIT START=1
+
+
+
+*INICIO	
+	GOSUB *BASE
+	GOSUB *PALET
+	GOSUB *RESORTE
+	GOSUB *SALIDA
+GOTO *INICIO
+
+
+'-------------------------------------------------
+'RUTINA DE BASE
+'-------------------------------------------------
+*BASE
+'SECCION PARA TOMAR LA PIEZA
+MOV P99
+HOPEN 1
+WAIT SRENTRADA = 1
+MOV P1, -50
+DLY 1
+MVS P1
+DLY 1
+HCLOSE 1
+DLY 1
+MVS P1, -50
+
+'SECCION PARA DEPOSITAR LA PIEZA
+MOV P200, -50
+MVS P200
+DLY 1
+HOPEN 1
+DLY 1
+MVS P200, -100
+MOV P99
+RETURN
+'-------------------------------------------------
+
+
+'-------------------------------------------------
+'RUTINA DE PALETIZADO
+'-------------------------------------------------
+*PALET
+MOV P99
+P400=PLT 1, X
+MOV P400, -50
+MVS P400
+DLY 1
+HCLOSE 1
+MVS P400, -50
+
+MOV P212, -50
+MVS P212
+DLY 1
+HOPEN 1
+DLY 1
+MVS P212, -50
+MOV P99
+X=X+1
+IF X>8 THEN X=1
+RETURN
+'-------------------------------------------------
+
+
+'-------------------------------------------------
+'RUTINA DEL RESORTE
+'-------------------------------------------------
+*RESORTE
+MOV P99
+M_OUT(8)=1
+HOPEN 1
+MOV P4, -50
+MVS P4
+DLY 1
+HCLOSE 1
+DLY 1
+MVS P4, -50
+MOV P212, -100
+MVS P212
+DLY 1
+HOPEN 1
+DLY 1
+MVS P212, -50
+MOV P99
+M_OUT(8)=0
+RETURN
+'-------------------------------------------------
+
+'-------------------------------------------------
+'RUTINA DE SALIDA
+'-------------------------------------------------
+*SALIDA
+MOV P99
+HOPEN 1
+MOV P200, -50
+MVS P200
+DLY 1
+HCLOSE 1
+DLY 1
+MVS P200, -50
+MOV P99
+MVS P6
+DLY 1
+HOPEN 1
+DLY 1
+MVS P6, -50
+MOV P99
+RETURN
+'-------------------------------------------------
+
+
+
+
+
+
+'-------------------------------------------------
+'PROGRAMA NO.5 -  BASE, PALETIZADO, RESORTE E INTERRUPCION.
+'-------------------------------------------------
+
+
+OVRD 80
+SPD 150
+
+DEF IO START = BIT,3
+DEF IO SRENTRADA = BIT,2
+DEF PLT 1,P50,P51,P52,P53,2,4,1
+DEF ACT 1, M_IN(4)=0 GOSUB *PARO
+ACT 1 = 1
+X=1
+WAIT START=1
+
+
+
+*INICIO	
+	GOSUB *CILINDRO
+	GOSUB *PALET
+	GOSUB *RESORTE
+	GOSUB *SALIDA
+GOTO *INICIO
+
+
+'-------------------------------------------------
+'RUTINA DEL CILINDRO
+'-------------------------------------------------
+*CILINDRO
+'SECCION PARA TOMAR LA PIEZA
+MOV P99
+HOPEN 1
+WAIT SRENTRADA = 1
+MOV P1, -50
+DLY 1
+MVS P1
+DLY 1
+HCLOSE 1
+DLY 1
+MVS P1, -50
+
+'SECCION PARA DEPOSITAR LA PIEZA
+MOV P200, -50
+MVS P200
+DLY 1
+HOPEN 1
+DLY 1
+MVS P200, -100
+MOV P99
+RETURN
+'-------------------------------------------------
+
+
+'-------------------------------------------------
+'RUTINA DE PALETIZADO
+'-------------------------------------------------
+*PALET
+MOV P99
+P400=PLT 1, X
+MOV P400, -50
+MVS P400
+DLY 1
+HCLOSE 1
+MVS P400, -50
+
+MOV P212, -50
+MVS P212
+DLY 1
+HOPEN 1
+DLY 1
+MVS P212, -50
+MOV P99
+X=X+1
+IF X>8 THEN X=1
+RETURN
+'-------------------------------------------------
+
+
+'-------------------------------------------------
+'RUTINA DEL RESORTE
+'-------------------------------------------------
+*RESORTE
+MOV P99
+M_OUT(8)=1
+HOPEN 1
+MOV P4, -50
+MVS P4
+DLY 1
+HCLOSE 1
+DLY 1
+MVS P4, -50
+MOV P212, -100
+MVS P212
+DLY 1
+HOPEN 1
+DLY 1
+MVS P212, -50
+MOV P99
+M_OUT(8)=0
+RETURN
+'-------------------------------------------------
+
+'-------------------------------------------------
+'RUTINA DE SALIDA
+'-------------------------------------------------
+*SALIDA
+MOV P99
+HOPEN 1
+MOV P200, -50
+MVS P200
+DLY 1
+HCLOSE 1
+DLY 1
+MVS P200, -50
+MOV P99
+MVS P6
+DLY 1
+HOPEN 1
+DLY 1
+MVS P6, -50
+MOV P99
+RETURN
+'-------------------------------------------------
+
+
+'-------------------------------------------------
+'PARO
+'-------------------------------------------------
+*PARO
+    M_OUT(0) = 1
+    WAIT M_IN(3)=1
+    M_OUT(0)=0
+    RETURN 0    
+ END
+
+
+
+
+
