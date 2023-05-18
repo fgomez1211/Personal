@@ -65,7 +65,7 @@
 650	DEF POS P5
 660	DEF POS PMWAIT1
 
-670	'Se mueve a la posición de la base para tomarla
+670	'Se mueve a la posición de la base mecanizada, la toma y regresa al centro.
 680	HOPEN 1
 690	MOV P5
 700	MVS P3
@@ -73,20 +73,22 @@
 720	HCLOSE 1
 730	DLY 1
 740	MOV P5
+750	MOV PMWAIT1
 
-750	'Toma la base y la mueve a la posicion 3 usando PMWAIT1 como posicion intermedia.
-760	MOV PMWAIT1
-770	DLY 1
-780	MOV P4,-50
-790	MVS P4
-800	DLY 1
-810	HOPEN 1
-820	DLY 1
-830	MVS P4,-50
-840	MOV PMWAIT1
-850  '------------------------------------------------------------------------------
-860  ' Finish
+760	'Mueve la base a la posicion 3 usando PMWAIT1 como posicion intermedia.
+770	MOV P4
+780	MOV P6
+790	DLY 1
+800	HOPEN 1
+810	DLY 1
+820	MOV P4
+830	MOV PMWAIT1
+840	
+850	
+860	
 870  '------------------------------------------------------------------------------
-880  *END
-890     END
+880  ' Finish
+890  '------------------------------------------------------------------------------
+900  *END
+910     END
 
