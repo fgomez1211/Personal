@@ -1,0 +1,92 @@
+10 DEF IO PartReady     = BIT,40    'E/A-Kopplung CNC erzeuge Part / I/O-Coupling CNC create Part
+20 
+30  'Ausgaenge/Outputs
+40  DEF IO CreatePart    = BIT,40    'E/A-Kopplung CNC Part erstellt / I/O-Coupling CNC part created
+50 
+60   *START
+70     CreatePart = 0
+80 
+90     M_OUTW(0) = 0                 'reset outputword 0 (Out0-Out15)
+100     M_19 = 0                      'reset handshake variable  
+110     M_10 = 0                      'reset automatic active variable
+120     M_11 = 0                      'reset station ready variable
+130     M_12 = 0                      'reset emergency stop variable
+140	CALLP "COSInit"
+150 	
+160 
+170 '------------------------------------------------------------------------------
+180  ' LMILL - LoadMill(Source,Type)
+190  '------------------------------------------------------------------------------
+200     M_00 = 1                      'Source Position
+210     M_01 = 1                      'Type = Baseplate
+220     CALLP "LMILL"                 'call subprogram
+230  	'CALLP "COSRun"
+240  '------------------------------------------------------------------------------
+250  ' Tell CNC to create the part
+260  '------------------------------------------------vsc------------------------------
+270     CreatePart = 1                'Source Position
+280     WAIT PartReady = 1
+290     CreatePart = 0                'Source Position
+300     WAIT PartReady = 0
+310  
+320  '------------------------------------------------------------------------------
+330  ' ULMILL - UnLoadMill(target, Type)
+340  '------------------------------------------------------------------------------
+350     M_00 = 1                      'Target Position
+360     M_01 = 1                      'Type = Baseplate
+370     CALLP "ULMILL"                'call subprogram
+380  
+390  '------------------------------------------------------------------------------
+400  ' LMILL - LoadMill(Source,Type)
+410  '------------------------------------------------------------------------------
+420     M_00 = 2                      'Source Position
+430     M_01 = 2                      'Type = Baseplate
+440     CALLP "LMILL"                 'call subprogram
+450  
+460  '------------------------------------------------------------------------------
+470  ' Tell CNC to create the part
+480  '------------------------------------------------------------------------------
+490     CreatePart = 1                'Source Position
+500     WAIT PartReady = 1
+510     CreatePart = 0                'Source Position
+520     WAIT PartReady = 0
+530  
+540  '------------------------------------------------------------------------------
+550  ' ULMILL - UnLoadMill(target, Type)
+560  '------------------------------------------------------------------------------
+570     M_00 = 2                      'Target Position
+580     M_01 = 2                      'Type = Baseplate
+590     CALLP "ULMILL"                'call subprogram
+600  '------------------------------------------------------------------------------
+610  ' CREE ACA SU CÓDIGO ADICIONAL PARA HACER EL ENSAMBLE EN LA BAHÍA 3
+620  '------------------------------------------------------------------------------
+630	DEF POS P3
+640	DEF POS P4
+650	DEF POS P5
+660	DEF POS PMWAIT1
+
+670	'Se mueve a la posición de la base para tomarla
+680	HOPEN 1
+690	MOV P5
+700	MVS P3
+710	DLY 1
+720	HCLOSE 1
+730	DLY 1
+740	MOV P5
+
+750	'Toma la base y la mueve a la posicion 3 usando PMWAIT1 como posicion intermedia.
+760	MOV PMWAIT1
+770	DLY 1
+780	MOV P4,-50
+790	MVS P4
+800	DLY 1
+810	HOPEN 1
+820	DLY 1
+830	MVS P4,-50
+840	MOV PMWAIT1
+850  '------------------------------------------------------------------------------
+860  ' Finish
+870  '------------------------------------------------------------------------------
+880  *END
+890     END
+
