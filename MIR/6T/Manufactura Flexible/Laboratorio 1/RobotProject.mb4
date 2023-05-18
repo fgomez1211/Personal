@@ -64,31 +64,52 @@
 640	DEF POS P4
 650	DEF POS P5
 660	DEF POS PMWAIT1
+670	DEF POS P7
+680	DEF POS P8
+690	DEF POS P9
+700	DEF POS P10
 
-670	'Se mueve a la posición de la base mecanizada, la toma y regresa al centro.
-680	HOPEN 1
-690	MOV P5
-700	MVS P3
-710	DLY 1
-720	HCLOSE 1
-730	DLY 1
-740	MOV P5
-750	MOV PMWAIT1
+710	'Se mueve a la posición de la base mecanizada, la toma y regresa al centro.
+720	HOPEN 1
+730	MOV P5
+740	MVS P3
+750	DLY 1
+760	HCLOSE 1
+770	DLY 1
+780	MOV P5
+790	MOV PMWAIT1
 
-760	'Mueve la base a la posicion 3 usando PMWAIT1 como posicion intermedia.
-770	MOV P4
-780	MOV P6
-790	DLY 1
-800	HOPEN 1
-810	DLY 1
-820	MOV P4
-830	MOV PMWAIT1
-840	
-850	
-860	
-870  '------------------------------------------------------------------------------
-880  ' Finish
-890  '------------------------------------------------------------------------------
-900  *END
-910     END
+800	'Mueve la base a la posicion 3 usando PMWAIT1 como posicion intermedia.
+810	MOV P4
+820	MOV P6
+830	DLY 1
+840	HOPEN 1
+850	DLY 1
+860	MOV P4
+870	MOV PMWAIT1
+880	
+890	'Se mueve a la posición del cilindro mecanizado, lo toma y mueve al centro.
+900	HOPEN 1
+910	MOV P8
+920	MVS P7
+930	DLY 1
+940	HCLOSE 1
+950	DLY 1
+960	MOV P8
+970	MOV PMWAIT1
+
+980	'Mueve el cilindro a la posición central para finalizar el ensamblaje.
+990	MOV P9
+1000	MOV P10
+1010	DLY 1
+1020	HOPEN 1
+1030	DLY 1
+1040	MOV P9
+1050	MOV PMWAIT1
+
+1060  '------------------------------------------------------------------------------
+1070  ' Finish
+1080  '------------------------------------------------------------------------------
+1090  *END
+1100     END
 
