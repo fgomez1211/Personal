@@ -58,58 +58,59 @@
 580     M_01 = 2                      'Type = Baseplate
 590     CALLP "ULMILL"                'call subprogram
 600  '------------------------------------------------------------------------------
-610  ' CREE ACA SU CÓDIGO ADICIONAL PARA HACER EL ENSAMBLE EN LA BAHÍA 3
+610  ' ASSEMBLY SECTION
 620  '------------------------------------------------------------------------------
-630	DEF POS P3
-640	DEF POS P4
-650	DEF POS P5
-660	DEF POS PMWAIT1
-670	DEF POS P7
-680	DEF POS P8
-690	DEF POS P9
-700	DEF POS P10
+630	'Definición de Posiciones.
+640	DEF POS P3
+650	DEF POS P4
+660	DEF POS P5
+670	DEF POS PMWAIT1
+680	DEF POS P7
+690	DEF POS P8
+700	DEF POS P9
+710	DEF POS P10
 
-710	'Se mueve a la posición de la base mecanizada, la toma y regresa al centro.
-720	HOPEN 1
-730	MOV P5
-740	MVS P3
-750	DLY 1
-760	HCLOSE 1
-770	DLY 1
-780	MOV P5
-790	MOV PMWAIT1
+720	'Se mueve a la posición de la base mecanizada, la toma y regresa al centro.
+730	HOPEN 1
+740	MOV P5
+750	MVS P3
+760	DLY 1
+770	HCLOSE 1
+780	DLY 1
+790	MOV P5
+800	MOV PMWAIT1
 
-800	'Mueve la base a la posicion 3 usando PMWAIT1 como posicion intermedia.
-810	MOV P4
-820	MOV P6
-830	DLY 1
-840	HOPEN 1
-850	DLY 1
-860	MOV P4
-870	MOV PMWAIT1
-880	
-890	'Se mueve a la posición del cilindro mecanizado, lo toma y mueve al centro.
-900	HOPEN 1
-910	MOV P8
-920	MVS P7
-930	DLY 1
-940	HCLOSE 1
-950	DLY 1
-960	MOV P8
-970	MOV PMWAIT1
+810	'Mueve la base a la posicion 3 usando PMWAIT1 como posicion intermedia.
+820	MOV P4
+830	MOV P6
+840	DLY 1
+850	HOPEN 1
+860	DLY 1
+870	MOV P4
+880	MOV PMWAIT1
+890	
+900	'Se mueve a la posición del cilindro mecanizado, lo toma y mueve al centro.
+910	HOPEN 1
+920	MOV P8
+930	MVS P7
+940	DLY 1
+950	HCLOSE 1
+960	DLY 1
+970	MOV P8
+980	MOV PMWAIT1
 
-980	'Mueve el cilindro a la posición central para finalizar el ensamblaje.
-990	MOV P9
-1000	MOV P10
-1010	DLY 1
-1020	HOPEN 1
-1030	DLY 1
-1040	MOV P9
-1050	MOV PMWAIT1
+990	'Mueve el cilindro a la posición central para finalizar el ensamblaje.
+1000	MOV P9
+1010	MOV P10
+1020	DLY 1
+1030	HOPEN 1
+1040	DLY 1
+1050	MOV P9
+1060	MOV PMWAIT1
 
-1060  '------------------------------------------------------------------------------
-1070  ' Finish
-1080  '------------------------------------------------------------------------------
-1090  *END
-1100     END
+1070  '------------------------------------------------------------------------------
+1080  ' Finish
+1090  '------------------------------------------------------------------------------
+1100  *END
+1110     END
 
