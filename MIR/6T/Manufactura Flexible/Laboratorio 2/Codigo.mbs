@@ -1,106 +1,124 @@
 option explicit
 
-'En este código se presenta un control básico para un AGV
-'El motor se encenderá con la presencia de una pista y se detendrá cuando no encuestre una.
-'La información de la posición en la pista será usada para indicar la dirección izquierda o derecha.
-
 
 'Declaración de Variables
 dim Gain as integer
-dim DefaultThrottle as integer
-dim TapeDetect as boolean
-dim Markerleft as boolean
-dim Markerright as boolean
-dim Throttle as integer
+dim AceleracionMaxima as integer
+dim MagneticoCinta as boolean
+dim MarcadorIzquierdo as boolean
+dim MarcadorDerecho as boolean
+dim Aceleracion as integer
 dim Tape_Position as integer
 dim LineSelect as integer
-dim Steering as integer
-dim GoButton as boolean
+dim Direccion as integer
+dim BotonInicio as boolean
+dim ParoEmergencia as boolean
 dim RunState as boolean
-dim PauseTime as integer
-dim Station as integer
+dim TiempoDePausa as integer
+dim Estacion as integer
 dim PreviousMarkerLeft as boolean
 dim PreviousMarkerRight as boolean
 dim bandera as boolean
-
-
-'inicialización de constantes
+'
+'
+'
+'Inicializacion de Constantes
 Gain=-10 'Se usa valo negativo para invertir la dirección
-DefaultThrottle = 200 'Se asigna la velocidad máxima del motor del AGV
+AceleracionMaxima = 200 'Se asigna la velocidad máxima del motor del AGV
 LineSelect = 1 'Verificación de qué linea se está detectando y se asigna el lado izquierdo como predeterminado
-Station = 3 'Se establecen las 3 estaciones o paradas que tendrá el robot
+Estacion = 3 'Numero de estaciones
 bandera = true  
 
 
-'Ciclo a repetir
-top:
 
+Ciclo:
+AceleracionMaxima = 215
+'Implementacion de paro de emergencia. Si la entrada digital DI3 se activa, la aceleracion del vehiculo es 0, deteniendose por completo.
+'Si no esta activada la entrada digital DI3, se ejecuta el codigo de manera normal.
+ParoEmergencia = getvalue(_DI,3)
+if (ParoEmergencia = true)
+	AceleracionMaxima = 0
+end if
 
 'Lectura de los datos del sensor
-TapeDetect = getvalue(_MGD)
-MarkerLeft = getvalue (_MGM, 1)
-MarkerRight = getvalue (_MGM, 2)
+MagneticoCinta = getvalue(_MGD)
+MarcadorIzquierdo = getvalue (_MGM, 1)
+MarcadorDerecho = getvalue (_MGM, 2)
 
 
-'Lectura de botones
-if Station = 0
-	PauseTime = 45000
-elseif Station = 1
-	PauseTime = 40000
-elseif Station = 2
-	PauseTime = 30000
-elseif Station = 3
-	Station = 0
+'Indicacion de la estacion y definicion de tiempos de pausa. Si se quiere realizar la simulacion mas rapida, quitar un cero a cada TiempoDePausa.
+if Estacion = 0
+	TiempoDePausa = 45000
+elseif Estacion = 1
+	TiempoDePausa = 40000
+elseif Estacion = 2
+	TiempoDePausa = 30000
+elseif Estacion = 3
+	Estacion = 0
 	RunState = false
 end if
 
 
-GoButton = getvalue (_DI, 2)
-if (Station=0) then RunState = true
 
-if (GoButton) then SetTimerCount (1,0) 'Al pulsar el botón se borrará el tiempo de pausa
+'El BotonInicio sirve para desactivar las paradas del AGV. Si se activa la entrada digital DI2, el robot se movera sobre la cinta
+'Pero no se detendra en ninguno de los marcadores.
+BotonInicio = getvalue (_DI, 2)
+if (Estacion=0) then RunState = true
+
+if (BotonInicio) then SetTimerCount (1,0) 'Al pulsar el botón se borrará el tiempo de pausa
 
 if GetTimerState (1) then RunState = true 'Cuando se quita la pausa del timer el AGV puede moverse
 
+
+
 'Se usa la pausa y la pisita para determinar el direccionamiento del AGV
-if (TapeDetect and GetTimerState(1))
-	Throttle = DefaultThrottle
+if (MagneticoCinta and GetTimerState(1))
+	Aceleracion = AceleracionMaxima
 else
-	Throttle = 0
+	Aceleracion = 0
 end if
 
+
+
 'Selecciona el sensor de presencia y decide a qué lado ir
-if (MarkerLeft) then LineSelect = 1
-if (MarkerRight) then LineSelect = 2
-if (MarkerRight AND MarkerLeft) then LineSelect = 0
+if (MarcadorIzquierdo) then LineSelect = 1
+if (MarcadorDerecho) then LineSelect = 2
+if (MarcadorDerecho AND MarcadorIzquierdo) then LineSelect = 0
+
+
 'Detección cuando se llega a una estación
-if (MarkerLeft and MarkerRight and bandera)
-	SetTimerCount (1,PauseTime)
+if (MarcadorIzquierdo and MarcadorDerecho and bandera)
+	SetTimerCount (1,TiempoDePausa)
 	RunState = false
 	bandera = false
 end if
 
 
 
+'Tape_Posicion y Direccion son utilizados para generar el valor de la direccion. Aqui se escriben los valores al AGV.
 Tape_Position = getvalue(_MGT, LineSelect)
-Steering = Tape_Position * Gain
+Direccion = Tape_Position * Gain
+setcommand(_G, 1, Aceleracion)
+setcommand(_G, 2, Direccion)
 
-setcommand(_G, 1, Throttle)
-setcommand(_G, 2, Steering)
 
+'Si LineSelect es igual a cero, significa que solamente detecta la linea central. Una vez finalice una pausa, este incrementara
+'El contador Estacion, el cual a su vez le dira al AGV cuanto tiempo detenerse en el siguiente paro.
 if (LineSelect = 0)
 	if((PreviousMarkerLeft) AND (PreviousMarkerRight))
 		PreviousMarkerLeft = false
 		PreviousMarkerRight = false
-		Station = Station+1
+		Estacion = Estacion+1
 		bandera = true
 	end if
 else
 
 PreviousMarkerLeft = true
 PreviousMarkerRight = true
-Station = Station
+Estacion = Estacion
 end if
 
-print("\r", TapeDetect, "\t", Tape_Position, "\t", MarkerLeft, "\t", MarkerRight,"\t", Steering, "\t", RunState,"\t",LineSelect, "\t", Station,"\t",GetTimerCount(1))
-goto top
+'Se imprimen los valores de los sensores
+print("\r", MagneticoCinta, "\t", MarcadorIzquierdo, "\t", MarcadorDerecho,"\t", RunState,"\t",LineSelect, "\t", Estacion,"\t",GetTimerCount(1))
+goto Ciclo
+	
