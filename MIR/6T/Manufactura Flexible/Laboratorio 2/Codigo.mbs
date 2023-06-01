@@ -1,0 +1,106 @@
+option explicit
+
+'En este código se presenta un control básico para un AGV
+'El motor se encenderá con la presencia de una pista y se detendrá cuando no encuestre una.
+'La información de la posición en la pista será usada para indicar la dirección izquierda o derecha.
+
+
+'Declaración de Variables
+dim Gain as integer
+dim DefaultThrottle as integer
+dim TapeDetect as boolean
+dim Markerleft as boolean
+dim Markerright as boolean
+dim Throttle as integer
+dim Tape_Position as integer
+dim LineSelect as integer
+dim Steering as integer
+dim GoButton as boolean
+dim RunState as boolean
+dim PauseTime as integer
+dim Station as integer
+dim PreviousMarkerLeft as boolean
+dim PreviousMarkerRight as boolean
+dim bandera as boolean
+
+
+'inicialización de constantes
+Gain=-10 'Se usa valo negativo para invertir la dirección
+DefaultThrottle = 200 'Se asigna la velocidad máxima del motor del AGV
+LineSelect = 1 'Verificación de qué linea se está detectando y se asigna el lado izquierdo como predeterminado
+Station = 3 'Se establecen las 3 estaciones o paradas que tendrá el robot
+bandera = true  
+
+
+'Ciclo a repetir
+top:
+
+
+'Lectura de los datos del sensor
+TapeDetect = getvalue(_MGD)
+MarkerLeft = getvalue (_MGM, 1)
+MarkerRight = getvalue (_MGM, 2)
+
+
+'Lectura de botones
+if Station = 0
+	PauseTime = 45000
+elseif Station = 1
+	PauseTime = 40000
+elseif Station = 2
+	PauseTime = 30000
+elseif Station = 3
+	Station = 0
+	RunState = false
+end if
+
+
+GoButton = getvalue (_DI, 2)
+if (Station=0) then RunState = true
+
+if (GoButton) then SetTimerCount (1,0) 'Al pulsar el botón se borrará el tiempo de pausa
+
+if GetTimerState (1) then RunState = true 'Cuando se quita la pausa del timer el AGV puede moverse
+
+'Se usa la pausa y la pisita para determinar el direccionamiento del AGV
+if (TapeDetect and GetTimerState(1))
+	Throttle = DefaultThrottle
+else
+	Throttle = 0
+end if
+
+'Selecciona el sensor de presencia y decide a qué lado ir
+if (MarkerLeft) then LineSelect = 1
+if (MarkerRight) then LineSelect = 2
+if (MarkerRight AND MarkerLeft) then LineSelect = 0
+'Detección cuando se llega a una estación
+if (MarkerLeft and MarkerRight and bandera)
+	SetTimerCount (1,PauseTime)
+	RunState = false
+	bandera = false
+end if
+
+
+
+Tape_Position = getvalue(_MGT, LineSelect)
+Steering = Tape_Position * Gain
+
+setcommand(_G, 1, Throttle)
+setcommand(_G, 2, Steering)
+
+if (LineSelect = 0)
+	if((PreviousMarkerLeft) AND (PreviousMarkerRight))
+		PreviousMarkerLeft = false
+		PreviousMarkerRight = false
+		Station = Station+1
+		bandera = true
+	end if
+else
+
+PreviousMarkerLeft = true
+PreviousMarkerRight = true
+Station = Station
+end if
+
+print("\r", TapeDetect, "\t", Tape_Position, "\t", MarkerLeft, "\t", MarkerRight,"\t", Steering, "\t", RunState,"\t",LineSelect, "\t", Station,"\t",GetTimerCount(1))
+goto top
