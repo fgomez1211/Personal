@@ -247,7 +247,7 @@ async def main():
 
     elif switch == "connectionString":
         #conn_str = os.getenv("IOTHUB_DEVICE_CONNECTION_STRING")
-        conn_str="HostName=ingenieriaiothub.azure-devices.net;DeviceId=Fernando_PC;SharedAccessKey=DZ9PSyoKrxPiCemCj9dB37mi/u6vCiecENoQUX/YNI4="
+        conn_str=" "
         print("Connecting using Connection String " + conn_str)
         device_client = IoTHubDeviceClient.create_from_connection_string(
             conn_str, product_info=model_id
