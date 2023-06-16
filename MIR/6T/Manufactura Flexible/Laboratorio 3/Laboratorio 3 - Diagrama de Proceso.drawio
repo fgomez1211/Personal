@@ -1,13 +1,13 @@
-<mxfile host="app.diagrams.net" modified="2023-06-15T23:19:27.155Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="Epn1-siCbRz1y4QY0j8M" version="21.3.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-06-16T00:21:04.278Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="wrwOBsT_X7e6T2cbmc9D" version="21.3.7" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1032" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+    <mxGraphModel dx="1032" dy="564" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="9t7XOVwsSKRrDLuDX60Q-0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-3" target="ld2Q0Rl9ifkete67yDMp-26" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="WIyWlLk6GJQsqaUBKTNV-3" value="&lt;b&gt;Ejecución de &lt;/b&gt;&lt;br&gt;&lt;b&gt;Codigo.mbs&lt;/b&gt;&lt;br&gt;Programación del AGV" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-3" value="&lt;b&gt;Servidor OPC&lt;/b&gt;&lt;br&gt;Keps Server Quick Client" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="130" y="310" width="190" height="70" as="geometry" />
         </mxCell>
         <mxCell id="9t7XOVwsSKRrDLuDX60Q-3" value="Distancia: 5.529m, Tiempo: 56.88s, Velocidad: 0.972m/s&amp;nbsp;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="B-otEjHW6JDtHvaltUW4-0" target="B-otEjHW6JDtHvaltUW4-16" edge="1">
@@ -27,21 +27,28 @@
         <mxCell id="B-otEjHW6JDtHvaltUW4-16" value="&lt;b&gt;Estación No.2&lt;br&gt;&lt;/b&gt;Proceso de descarga de Materia Prima&lt;br&gt;Tiempo: 40s" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="592.5" y="760" width="190" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="L5HEDUzoinoEtIV4rbIi-0" value="&lt;b style=&quot;font-size: 22px;&quot;&gt;DIAGRAMA DE PROCESO&lt;br&gt;&lt;/b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;SISTEMAS DE MANUFACTURA FLEXIBLE&lt;br&gt;&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Elaborado por&lt;/b&gt;: Fernando Gómez y Emilio Guzmán&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Herramienta&lt;/b&gt;: Roboteq AVG Simulator&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Nombre&lt;/b&gt;: &#39;Codigo.mbs y Pista_1.trkx&#39;&lt;/span&gt;&lt;br&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Ubicación&lt;/b&gt;:&amp;nbsp;https://github.com/fgomez1211/Personal/blob/main/MIR/6T/Manufactura%20Flexible/Laboratorio%202/Codigo.mbs&lt;br&gt;&lt;/font&gt;&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="L5HEDUzoinoEtIV4rbIi-0" value="&lt;b style=&quot;font-size: 22px;&quot;&gt;DIAGRAMA DE PROCESO&lt;br&gt;&lt;/b&gt;&lt;font style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;SISTEMAS DE MANUFACTURA FLEXIBLE&lt;br&gt;&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Elaborado por&lt;/b&gt;: Fernando Gómez y Emilio Guzmán&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Herramienta&lt;/b&gt;: Codesys, FactoryI/O, Keps OPC Server&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Nombre&lt;/b&gt;: &#39;Laboratorio 03&#39;&lt;/span&gt;&lt;br&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Ubicación&lt;/b&gt;:&amp;nbsp;&lt;/font&gt;https://github.com/fgomez1211/Personal/blob/main/MIR/6T/Manufactura%20Flexible/Laboratorio%203/Laboratorio%203%20-%20Diagrama%20de%20Proceso.drawio&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="40" y="30" width="860" height="190" as="geometry" />
         </mxCell>
         <mxCell id="ld2Q0Rl9ifkete67yDMp-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="ld2Q0Rl9ifkete67yDMp-0" target="ld2Q0Rl9ifkete67yDMp-26" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ld2Q0Rl9ifkete67yDMp-0" value="&lt;b&gt;Ejecución de&lt;/b&gt;&lt;br&gt;&lt;b&gt;Pista_1.trkx&lt;/b&gt;&lt;br&gt;Trayectoria del AGV" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="ld2Q0Rl9ifkete67yDMp-0" value="&lt;b&gt;PLC Simulado&lt;/b&gt;&lt;br&gt;Codesys" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="670" y="315" width="190" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="9t7XOVwsSKRrDLuDX60Q-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="ld2Q0Rl9ifkete67yDMp-26" target="9t7XOVwsSKRrDLuDX60Q-21" edge="1">
+        <mxCell id="9t7XOVwsSKRrDLuDX60Q-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="ld2Q0Rl9ifkete67yDMp-0" target="9t7XOVwsSKRrDLuDX60Q-21" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="495" y="440" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="765" y="420" />
+              <mxPoint x="495" y="420" />
+            </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="ld2Q0Rl9ifkete67yDMp-26" value="&lt;b&gt;Ejecución de la Simulación&lt;/b&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="k8N3iWCZ-FH6xgKqNcAC-0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="ld2Q0Rl9ifkete67yDMp-26" target="9t7XOVwsSKRrDLuDX60Q-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ld2Q0Rl9ifkete67yDMp-26" value="&lt;b&gt;Ejecución de la Simulación&lt;/b&gt;&lt;br&gt;Factory I/O" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="400" y="300" width="190" height="90" as="geometry" />
         </mxCell>
         <mxCell id="9t7XOVwsSKRrDLuDX60Q-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="9t7XOVwsSKRrDLuDX60Q-4" target="B-otEjHW6JDtHvaltUW4-0" edge="1">
@@ -85,15 +92,6 @@
         </mxCell>
         <mxCell id="9t7XOVwsSKRrDLuDX60Q-21" value="&lt;b&gt;Detección de &lt;br&gt;Obstaculos&lt;/b&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="420" y="440" width="150" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="9t7XOVwsSKRrDLuDX60Q-28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="9t7XOVwsSKRrDLuDX60Q-23" target="9t7XOVwsSKRrDLuDX60Q-21" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="500" y="560" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="302" y="720" />
-              <mxPoint x="495" y="720" />
-            </Array>
-          </mxGeometry>
         </mxCell>
         <mxCell id="9t7XOVwsSKRrDLuDX60Q-23" value="&lt;b&gt;Se detiene el AGV hasta que se remueva el objeto&lt;/b&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#f8cecc;strokeColor=#b85450;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="205" y="570" width="195" height="80" as="geometry" />
