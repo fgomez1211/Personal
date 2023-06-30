@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-06-30T01:37:54.562Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="CDmAzD_oiHdWwLYPjm77" version="21.5.0" type="github">
+<mxfile host="app.diagrams.net" modified="2023-06-30T01:41:43.284Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="IC-EpJ7B6y34MCudbjT2" version="21.5.0" type="github">
   <diagram name="Page-1" id="ONhyKe8OTTxkF2mtK6s5">
-    <mxGraphModel dx="1894" dy="1260" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
+    <mxGraphModel dx="1353" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8,167 +8,170 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-13" value="Ejecución del Proceso&lt;br&gt;&lt;b&gt;Robot Program&lt;/b&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=3;shadow=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="519.8899999999999" y="842" width="190" height="90" as="geometry" />
+          <mxGeometry x="519.8899999999999" y="465" width="190" height="90" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-24" target="0qFu_1SzI6LwCL6rZjHh-26">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-24" value="Wait &#39;start = HI&#39;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
-          <mxGeometry x="549.78" y="979" width="130.22" height="81" as="geometry" />
+          <mxGeometry x="549.78" y="602" width="130.22" height="81" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-66" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-26" target="0qFu_1SzI6LwCL6rZjHh-65">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-26" value="&lt;b&gt;MoveJ&lt;/b&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="549.8300000000002" y="1101.89" width="130.11" height="50.11" as="geometry" />
+          <mxGeometry x="549.8300000000002" y="724.8900000000001" width="130.11" height="50.11" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-69" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-35" target="0qFu_1SzI6LwCL6rZjHh-68">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-35" value="Movimiento J&lt;br&gt;&lt;b&gt;P1&lt;/b&gt;&lt;br&gt;Movimiento a posición segura" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="720" y="1260" width="150" height="70" as="geometry" />
+          <mxGeometry x="720" y="883" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-91" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-62" target="0qFu_1SzI6LwCL6rZjHh-13">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-62" value="Definición de Puntos&lt;br&gt;&lt;b&gt;Posición y Orientación&lt;/b&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="220" y="840" width="190" height="95" as="geometry" />
+          <mxGeometry x="220" y="463" width="190" height="95" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-65" target="0qFu_1SzI6LwCL6rZjHh-35">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-65" value="&lt;b&gt;Gripper Open (1)&lt;/b&gt;&lt;br&gt;Se abre el gripper" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="729.99" y="1170" width="130.11" height="60.11" as="geometry" />
+          <mxGeometry x="729.99" y="793" width="130.11" height="60.11" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-68" target="0qFu_1SzI6LwCL6rZjHh-70">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-68" value="Movimiento J&lt;br&gt;&lt;b&gt;PCB_50&lt;/b&gt;&lt;br&gt;Movimiento 50mm arriba de la posición" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="712.57" y="1360" width="164.95" height="70" as="geometry" />
+          <mxGeometry x="712.57" y="983" width="164.95" height="70" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-70" target="0qFu_1SzI6LwCL6rZjHh-72">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-70" value="Movimiento J&lt;br&gt;&lt;span style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b&gt;PCB&lt;/b&gt;&lt;br&gt;Posición para tomar la pieza&lt;br&gt;&lt;/span&gt;" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="920" y="1360" width="130" height="70" as="geometry" />
+          <mxGeometry x="920" y="983" width="130" height="70" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-76" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-72" target="0qFu_1SzI6LwCL6rZjHh-74">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-72" value="&lt;b&gt;Gripper Close (1)&lt;/b&gt;&lt;br&gt;Se cierra el gripper &lt;br&gt;y se toma la pieza" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="1080" y="1365" width="130.11" height="60.05" as="geometry" />
+          <mxGeometry x="1080" y="988" width="130.11" height="60.05" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-78" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-74" target="0qFu_1SzI6LwCL6rZjHh-77">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-74" value="Movimiento J&lt;br&gt;&lt;span style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b&gt;PCB_50&lt;/b&gt;&lt;br&gt;Se retira 50mm arriba de la posición de toma.&lt;br&gt;&lt;/span&gt;" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="1260" y="1360" width="140" height="70" as="geometry" />
+          <mxGeometry x="1260" y="983" width="140" height="70" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-77" target="0qFu_1SzI6LwCL6rZjHh-79">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-77" value="Movimiento J&lt;br&gt;&lt;b&gt;P1&lt;/b&gt;&lt;br&gt;Movimiento a posición segura" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="1254" y="1482" width="150" height="70" as="geometry" />
+          <mxGeometry x="1254" y="1105" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-82" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-79" target="0qFu_1SzI6LwCL6rZjHh-81">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-79" value="Movimiento J&lt;br&gt;&lt;b&gt;PCB_final_50&lt;/b&gt;&lt;br&gt;Movimiento 50mm arriba de la posición de ensamble" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="1034.27" y="1477" width="174.84" height="80" as="geometry" />
+          <mxGeometry x="1034.27" y="1100" width="174.84" height="80" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-84" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-81" target="0qFu_1SzI6LwCL6rZjHh-83">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-81" value="Movimiento J&lt;br&gt;&lt;b&gt;PCB_final&lt;/b&gt;&lt;br&gt;Posición para colocar la PCB en el encajuelado" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="809.0000000000001" y="1477" width="174.84" height="80" as="geometry" />
+          <mxGeometry x="809.0000000000001" y="1100" width="174.84" height="80" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-83" target="0qFu_1SzI6LwCL6rZjHh-85">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-83" value="&lt;b&gt;Gripper Open (1)&lt;/b&gt;&lt;br&gt;Se abre el gripper y se deposita la pieza" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="619" y="1486.94" width="130.11" height="60.11" as="geometry" />
+          <mxGeometry x="619" y="1109.94" width="130.11" height="60.11" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-93" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-85" target="0qFu_1SzI6LwCL6rZjHh-92">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-85" value="Movimiento J&lt;br&gt;&lt;b&gt;PCB_final_50&lt;/b&gt;&lt;br&gt;Movimiento 50mm arriba de la posición de ensamble" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="389" y="1477" width="174.84" height="80" as="geometry" />
+          <mxGeometry x="389" y="1100" width="174.84" height="80" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-90" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-87" target="0qFu_1SzI6LwCL6rZjHh-62">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-87" value="Se coloca la base del cargado en la posición de ensamble" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=3;shadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="519.8899999999999" y="717" width="190" height="90" as="geometry" />
+          <mxGeometry x="519.8899999999999" y="340" width="190" height="90" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-107" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-92" target="0qFu_1SzI6LwCL6rZjHh-105">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-92" value="Wait: 6.0s" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
-          <mxGeometry x="179" y="1477" width="130" height="80" as="geometry" />
+          <mxGeometry x="179" y="1100" width="130" height="80" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-98" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-94" target="0qFu_1SzI6LwCL6rZjHh-97">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-94" value="Movimiento J&lt;br&gt;&lt;b&gt;pick_50&lt;/b&gt;&lt;br&gt;Movimiento 50mm arriba de la posición para tomar el ensamble completo" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="400" y="1617" width="192.42" height="100" as="geometry" />
+          <mxGeometry x="400" y="1240" width="192.42" height="100" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-100" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-97" target="0qFu_1SzI6LwCL6rZjHh-101">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="896.0500000000002" y="1667" as="targetPoint" />
+            <mxPoint x="896.0500000000002" y="1290" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-97" value="Movimiento J&lt;br&gt;&lt;b&gt;pick&lt;/b&gt;&lt;br&gt;Posición para tomar el ensamble final" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="641.2100000000002" y="1627" width="174.84" height="80" as="geometry" />
+          <mxGeometry x="641.2100000000002" y="1250" width="174.84" height="80" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-104" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-101" target="0qFu_1SzI6LwCL6rZjHh-103">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-101" value="&lt;b&gt;Gripper Close (1)&lt;/b&gt;&lt;br&gt;Se cierra el gripper &lt;br&gt;y se toma el ensamble" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="860.1" y="1631.95" width="140" height="70.03" as="geometry" />
+          <mxGeometry x="860.1" y="1254.95" width="140" height="70.03" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-112" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-103" target="0qFu_1SzI6LwCL6rZjHh-109">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1260" y="1667" />
-              <mxPoint x="1260" y="1797" />
+              <mxPoint x="1260" y="1290" />
+              <mxPoint x="1260" y="1420" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-103" value="Movimiento J&lt;br&gt;&lt;b&gt;P1&lt;/b&gt;&lt;br&gt;Movimiento a posición segura" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="1060.11" y="1631.98" width="150" height="70" as="geometry" />
+          <mxGeometry x="1060.11" y="1254.98" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-108" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.017;entryY=0.503;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-105" target="0qFu_1SzI6LwCL6rZjHh-94">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-105" value="El operador coloca la tapadera y finaliza el enamble. Finalizado el tiempo de 6 segundos, continúa el programa" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=3;shadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="149.9999999999999" y="1622" width="190" height="90" as="geometry" />
+          <mxGeometry x="149.9999999999999" y="1245" width="190" height="90" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-113" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-109" target="0qFu_1SzI6LwCL6rZjHh-111">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-109" value="Movimiento J&lt;br&gt;&lt;b&gt;place_50&lt;/b&gt;&lt;br&gt;Movimiento 50mm arriba de la posición de salida del ensamble" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="1035.27" y="1757" width="174.84" height="80" as="geometry" />
+          <mxGeometry x="1035.27" y="1380" width="174.84" height="80" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-116" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.067;entryY=0.495;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-111" target="0qFu_1SzI6LwCL6rZjHh-115">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-111" value="Movimiento J&lt;br&gt;&lt;b&gt;place&lt;/b&gt;&lt;br&gt;Posición de salida del ensamble final" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="825.26" y="1757" width="174.84" height="80" as="geometry" />
+          <mxGeometry x="825.26" y="1380" width="174.84" height="80" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-118" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-115" target="0qFu_1SzI6LwCL6rZjHh-117">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-115" value="&lt;b&gt;Gripper Open (1)&lt;/b&gt;&lt;br&gt;Se abre el gripper y se deposita el ensamble" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="641.21" y="1766.94" width="130.11" height="60.11" as="geometry" />
+          <mxGeometry x="641.21" y="1389.94" width="130.11" height="60.11" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-120" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0qFu_1SzI6LwCL6rZjHh-117" target="0qFu_1SzI6LwCL6rZjHh-119">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-117" value="Movimiento J&lt;br&gt;&lt;b&gt;place_50&lt;/b&gt;&lt;br&gt;Movimiento 50mm arriba de la posición de salida del ensamble" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="417.58" y="1757" width="174.84" height="80" as="geometry" />
+          <mxGeometry x="417.58" y="1380" width="174.84" height="80" as="geometry" />
         </mxCell>
         <mxCell id="0qFu_1SzI6LwCL6rZjHh-119" value="Movimiento J&lt;br&gt;&lt;b&gt;P1&lt;/b&gt;&lt;br&gt;Movimiento a posición segura" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
-          <mxGeometry x="169.9999999999999" y="1762" width="150" height="70" as="geometry" />
+          <mxGeometry x="169.9999999999999" y="1385" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="0qFu_1SzI6LwCL6rZjHh-121" value="&lt;b style=&quot;font-size: 22px;&quot;&gt;DIAGRAMA DE FLUJO DE PROCESO&lt;br&gt;&lt;/b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Laboratorio de Práctica Colaborativa con Robot UR3e&lt;br&gt;&lt;br&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Elaborado por&lt;/b&gt;:Fernando Gómez, Mynor Barrios y Emilio Guzmán&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Herramienta&lt;/b&gt;: URSim 3&lt;/span&gt;&lt;br&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Ubicación&lt;/b&gt;:&amp;nbsp;https://github.com/fgomez1211/Personal/blob/main/MIR/6T/Proyecto%20Final/Proyecto_Final%20-%20Diagrama%20de%20Proceso.drawio.pdf&lt;/font&gt;&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="41" y="50" width="1080" height="190" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
