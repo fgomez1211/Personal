@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-09-28T19:08:24.081Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="nMpYk8AhyaOZn6r7gpMj" version="21.8.2" type="github">
+<mxfile host="app.diagrams.net" modified="2023-09-28T20:15:28.273Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" etag="I6npFGzFkEjmlj4a9BqZ" version="21.8.2" type="github">
   <diagram name="Page-1" id="zidWxDZTBbv9Yz6WOGqk">
-    <mxGraphModel dx="1330" dy="810" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
+    <mxGraphModel dx="1093" dy="665" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1132,7 +1132,7 @@
         <mxCell id="_4ULPOaJ6XxAIvbVORD--10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fillColor=#e51400;strokeColor=#B20000;" edge="1" parent="1" source="LHox1asgE501jTqtss1L-148" target="DbFJll_KEH7Bvn8PF8tY-8">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="LHox1asgE501jTqtss1L-148" value="Power Supply&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;&quot;&gt;24V DC 10A&lt;/span&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;&quot;&gt;PWM&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=right;" parent="1" vertex="1">
+        <mxCell id="LHox1asgE501jTqtss1L-148" value="Power Supply&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;&quot;&gt;24V DC 65A&lt;/span&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;&quot;&gt;PWM&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=right;" parent="1" vertex="1">
           <mxGeometry x="1949" y="840" width="120" height="47.75" as="geometry" />
         </mxCell>
         <mxCell id="LHox1asgE501jTqtss1L-149" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeColor=#97D077;" parent="1" source="LHox1asgE501jTqtss1L-155" target="LHox1asgE501jTqtss1L-156" edge="1">
@@ -1252,7 +1252,7 @@
             <mxPoint x="-1" y="6" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="LHox1asgE501jTqtss1L-207" value="Selector&lt;br&gt;Control Manual" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+        <mxCell id="LHox1asgE501jTqtss1L-207" value="Selector&lt;br&gt;Control Automatico" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
           <mxGeometry x="1700" y="790" width="130" height="80" as="geometry" />
         </mxCell>
         <mxCell id="LHox1asgE501jTqtss1L-209" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#7EA6E0;" parent="1" source="LHox1asgE501jTqtss1L-208" target="DbFJll_KEH7Bvn8PF8tY-4" edge="1">
