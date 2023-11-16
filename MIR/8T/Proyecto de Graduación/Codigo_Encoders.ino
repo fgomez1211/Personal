@@ -11,7 +11,7 @@ void setup() {
    
   //B rising pulse from encodenren activated ai1(). AttachInterrupt 1 is DigitalPin nr 3 on moust Arduino.
   attachInterrupt(1, ai1, RISING);
-  }
+}
    
   void loop() {
   // Send the value of counter
@@ -19,7 +19,7 @@ void setup() {
   Serial.println (counter);
   temp = counter;
   }
-  }
+}
    
   void ai0() {
   // ai0 is activated if DigitalPin nr 2 is going from LOW to HIGH
@@ -29,7 +29,7 @@ void setup() {
   }else{
   counter--;
   }
-  }
+}
    
   void ai1() {
   // ai0 is activated if DigitalPin nr 3 is going from LOW to HIGH
@@ -39,4 +39,4 @@ void setup() {
   }else{
   counter++;
   }
-  }
+}
