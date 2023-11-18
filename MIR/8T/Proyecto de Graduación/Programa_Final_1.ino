@@ -33,7 +33,7 @@ double relacion_eje_1=214.13;
 double relacion_encoder_1=pasos_encoder*relacion_eje_1;
 
 //Coordenadas de prueba en grados
-double  grados_eslabon_1 =50;
+double  grados_eslabon_1 =0;
 
 //Coordenadas en pasos
 double pasos_1 = (grados_eslabon_1/360) * relacion_encoder_1;
@@ -65,17 +65,72 @@ void setup(){
   digitalWrite(pwm2,LOW);
   digitalWrite(pwm1,LOW);
 
+  Serial.println("Iniciando rutina...");
+  Serial.println("Buscando POS Home...");
   findhome();
+  Serial.print("POS Home Encontrada!");
   digitalWrite(pwm2,LOW);
   digitalWrite(pwm1,LOW);
   contador_A=0;
+
 
 }
 
 
 void loop(){
-  
-  delay(2000);
+
+  delay(5000);
+
+
+ if (Serial.available() > 0) { // Check if any data is available to read
+    grados_eslabon_1 = Serial.parseInt(); // Read the integer from the serial input
+    Serial.print("Grados: "); // Print the label for the output
+    Serial.println(grados_eslabon_1); // Print the read number to the serial output
+    delay(2000);
+ }
+
+ double pasos_1 = (grados_eslabon_1/360) * relacion_encoder_1;
+
+  if (grados_eslabon_1 <0 && contador_A < pasos_1){
+    digitalWrite(pwm2,HIGH);
+    Serial.println(contador_A);
+    Serial.println(pasos_1);
+    }
+    else{
+      grados_eslabon_1 =0;
+      digitalWrite(pwm2,LOW);
+      double Posicion_actual = (contador_A/relacion_encoder_1) * 360;
+      Serial.print("Posicion_actual: " );
+      Serial.println(Posicion_actual);
+      grados_eslabon_1 = 0;
+      delay(5000);
+      }
+
+    if (grados_eslabon_1 >0 && contador_A < pasos_1){
+    digitalWrite(pwm1,HIGH);
+    Serial.println(contador_A);
+    Serial.println(pasos_1);
+    }
+
+    else{
+      grados_eslabon_1 =0;
+      digitalWrite(pwm2,LOW);
+      double Posicion_actual = (contador_A/relacion_encoder_1) * 360;
+      Serial.print("Posicion_actual: " );
+      Serial.println(Posicion_actual);
+      delay(5000);
+      }
+
+
+
+ if (grados_eslabon_1 =0){
+    digitalWrite(pwm1,LOW);
+    digitalWrite(pwm2,LOW);
+    }
+
+
+/*
+delay(2000);
 
 
   if (contador_A < pasos_1){
@@ -92,9 +147,9 @@ void loop(){
     }
 
 }
-
-/*
 */
+
+}
 
 
 void enc_A(){
@@ -113,10 +168,18 @@ void enc_home(){
 }
 
 
+//------------------------------------------------------------------------------------------
+// FUNCION: findhome(). Ejecuta una rutina para encontrar la POS Home de la articulación.
+// Para encontrar la POS Home la articulación debe de encontrar un pulso del pin Home. 
+// Mientras detecta el pulso, debe encontrar un siguiente pulso en Index.
+// Cuando el brazo llega a un extremo de su rotación y no detecta el POS Home, 
+// este valida si tiene la misma posición que la anterior
+// si esto sucede 5 veces, la articulación se movera hacia el otro sentido para intentar buscar POS Home.
+
 void findhome(){
-  int m = 1;
-  int vuelta = -1;
-  int retry=0;
+  int m = 1;                          //Variable utilizada para indicar que se mueva el motor.
+  int vuelta = -1;                    //Variable utilizada para indicar la cantidad de vueltas del encoder.
+  int retry=0;                        
   contador_anterior=-999;
   contador_A=0;
   index=0;
