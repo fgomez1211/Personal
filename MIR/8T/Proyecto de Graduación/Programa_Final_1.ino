@@ -2,9 +2,9 @@
 //Señales del Encoder
 byte signalPin =18;
 //byte signalPin_2 =19;
-byte signalPin_3 =20;
+byte signalPin_3 =19;
 
-byte signalPin_4 =19;
+byte signalPin_4 =20;
 
 byte posicion_actual=0;
 
@@ -33,7 +33,7 @@ double relacion_eje_1=214.13;
 double relacion_encoder_1=pasos_encoder*relacion_eje_1;
 
 //Coordenadas de prueba en grados
-double  grados_eslabon_1 =30;
+double  grados_eslabon_1 =50;
 
 //Coordenadas en pasos
 double pasos_1 = (grados_eslabon_1/360) * relacion_encoder_1;
@@ -74,8 +74,10 @@ void setup(){
 
 
 void loop(){
+  
+  delay(2000);
 
-/*
+
   if (contador_A < pasos_1){
     digitalWrite(pwm2,HIGH);
     Serial.println(contador_A);
@@ -87,11 +89,12 @@ void loop(){
       Serial.print("Posicion_actual: " );
       Serial.println(Posicion_actual);
       delay(5000);
-
-
     }
-    */
+
 }
+
+/*
+*/
 
 
 void enc_A(){
@@ -118,7 +121,6 @@ void findhome(){
   contador_A=0;
   index=0;
   home = 0;
-
 
   while (home != 1 && vuelta !=1) {
     delay(100);
