@@ -269,8 +269,5 @@ void findhome(){
     Serial.println(vuelta);
 }
     
-
-
-// */
   
     
