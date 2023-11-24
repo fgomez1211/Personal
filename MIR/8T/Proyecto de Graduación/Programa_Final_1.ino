@@ -113,7 +113,6 @@ void loop(){
       Serial.print(contador_A);
       Serial.print(" , ");
       Serial.println(pasos_1);
-      Serial.println("Estoy en el else if");
   }
   else{
       pasos_1=0;

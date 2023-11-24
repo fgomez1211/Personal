@@ -41,9 +41,10 @@ double relacion_encoder_1=pasos_encoder*relacion_articulacion_1;
 //Coordenadas de prueba en grados
 double  grados_eslabon_1 =0;
 
-//Coordenadas en paso
+//Coordenadas en pasos
 double pasos_1 = 0;
 
+//Variables para la habilitación de la rotación horario y antihorario
 int enable_positivo = false;
 int enable_negativo = false;
 double pasos_1_positivo = 0;
@@ -68,7 +69,7 @@ void setup(){
 
   //Configuración de señales en pines interrupt.
   attachInterrupt(digitalPinToInterrupt(signalPin_1), enc_A, FALLING);
-  attachInterrupt(digitalPinToInterrupt(signalPin_2), enc_index, FALLING);
+  attachInterrupt(digitalPinToInterrupt(signalPin_2), enc_index, CHANGE);
   attachInterrupt(digitalPinToInterrupt(signalPin_3), enc_home, FALLING);
 
   //Activa los Enable del driver, dejando los PWM  para enceder/apagar el motor.
@@ -99,38 +100,35 @@ void setup(){
 
 void loop(){
 
+
 //--------------------------------------------------------------------------------------------------------------------------------------------
 // INICIO DE COMUNICACION SERIAL
   if (Serial.available() > 0) {   // Revisa si hay un valor para leer en el puerto serial.
-    grados_eslabon_1 = Serial.parseInt(); //Leer los grados desde el puerto serial.
-    delay(2000);
-    }
-
-    if(grados_eslabon_1>=0){
-      pasos_1_positivo = (grados_eslabon_1/360) * relacion_encoder_1; //Calculo de pasos a moverse según el valor leido en el puerto serial
-      Serial.print(pasos_1_positivo);
-      Serial.print(" , ");
-      Serial.println(contador_A);
-      enable_positivo = true;
-    }
-
-    if(grados_eslabon_1<0){
-      grados_eslabon_1 = grados_eslabon_1*(-1);
-      pasos_1_negativo = (grados_eslabon_1/360) * relacion_encoder_1;
-      Serial.print("Moverse ");
-      Serial.print(pasos_1_negativo);
-      Serial.print(" , ");
-      Serial.println(contador_A);
-      enable_negativo = true;
+      grados_eslabon_1 = Serial.parseInt(); //Leer los grados desde el puerto serial.
+      delay(1000);
       }
+      else if(grados_eslabon_1>0){
+        pasos_1_positivo = (grados_eslabon_1/360) * relacion_encoder_1; //Calculo de pasos a moverse según el valor leido en el puerto serial
+        enable_positivo = true;
+      }
+      else if(grados_eslabon_1<0){
+        grados_eslabon_1 = grados_eslabon_1*(-1);
+        pasos_1_negativo = (grados_eslabon_1/360) * relacion_encoder_1;
+        enable_negativo = true;
+        }
+        else{
+          Serial.println("Esperando instruccion.......");
+          delay(1000);
+        }
+
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 // SI EL VALOR INGRESADO EN EL SERIAL ES POSITIVO
   if(enable_positivo==true){
-    if(grados_eslabon_1 >0){
+    if(grados_eslabon_1 >=0){
       if (contador_A< pasos_1_positivo){
           digitalWrite(pwm1,LOW);
-          digitalWrite(pwm2, HIGH);
+          digitalWrite(pwm2,HIGH);
           Serial.print(contador_A);
           Serial.print(" , ");
           Serial.println(pasos_1);
@@ -139,38 +137,38 @@ void loop(){
             enable_positivo=false;
             pasos_1=0;
             contador_A=0;
+            grados_eslabon_1=0;
             digitalWrite(pwm1,LOW);
             digitalWrite(pwm2, LOW);
-            Serial.println("Posicion positiva alcanzada, esperando instruccion... ");
+            Serial.println("Posicion alcanzada, esperando nueva instruccion... ");
             delay(1000);
             }
-    }
+        }
   }
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 // SI EL VALOR INGRESADO EN EL SERIAL ES NEGATIVO
   if(enable_negativo==true){
-    if(grados_eslabon_1 < 0){
+    if(grados_eslabon_1 > 0){
       if (contador_A < pasos_1_negativo){
           digitalWrite(pwm2,LOW);
           digitalWrite(pwm1, HIGH);
-          Serial.print(contador_A);
-          Serial.print(" , ");
-          Serial.println(pasos_1);
           }
           else{
             enable_negativo = false;
             pasos_1=0;
             contador_A=0;
+            grados_eslabon_1=0;
             digitalWrite(pwm1,LOW);
             digitalWrite(pwm2, LOW);
-            Serial.println("Posicion negativa alcanzada, esperando instruccion... ");
+            Serial.println("Posicion alcanzada, esperando nueva instruccion... ");
             delay(1000);
             }            
       }
     }
 }
+
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
 // Función interrupt para el Canal A del encoder.
@@ -212,12 +210,12 @@ void enc_home(){
 
 void findhome(){
   int m = 1;                          //Variable utilizada para indicar que se mueva el motor.
-  int vuelta = -1;                    //Variable utilizada para indicar la cantidad de vueltas del encoder.
-  int retry=0;                        
+  int vuelta = -1;                    //cantidad de vueltas del encoder.
+  int retry=0;                        //Contador de intentos una vez la articulacion llegue a un tope
   contador_anterior=-999;
-  contador_A=0;
-  index=0;
-  home = 0;
+  contador_A=0;                       //Pulsos provenientes del encoder canal B
+  index=0;                            //Pulso proveniente del encoder, index
+  home = 0;                           //PUlso proveniente del encoder, home
 
   while (home != 1 && vuelta !=1) {
     delay(100);
@@ -237,7 +235,7 @@ void findhome(){
       contador_anterior=contador_A;
     }
 
-    if(retry>5){
+    if(retry>5){                            //Funcion para el conteo de los intentos
       if(m==1){
         m=-1;
       }else{
@@ -250,7 +248,7 @@ void findhome(){
       home=0;
     }
 
-    if(home>0 && index>0){
+    if(home>0){                             //Funcion para encontrar el home
       digitalWrite(pwm1,LOW);
       digitalWrite(pwm2,LOW);
       vuelta=1;
@@ -269,5 +267,8 @@ void findhome(){
     Serial.println(vuelta);
 }
     
+
+
+// */
   
     
