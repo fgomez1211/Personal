@@ -6,9 +6,6 @@ byte signalPin_1 =18; //Señal del Canal A del Encoder
 byte signalPin_2 =19; //Señal Index del Encoder
 byte signalPin_3 =20; //Señal Home del Encoder
 
-//Variable para indicar la posición actual de la articulación en grados.
-byte posicion_actual=0;
-
 
 //Variables utilizadas para encontrar la POS Home en la rutina
 volatile long int home=0;
@@ -18,14 +15,13 @@ volatile long int contador_anterior=0;
 
 //Variable que llevará el conteo de pasos el Encoder
 volatile long int contador_A=0;
-//volatile long int contador_B=0;
 
 
 //Declaración de señales PMW y Enables para el motor.
-int pwm1 = 4; //Activación sentido antihorario
-int pwm2 = 5; //Activación sentido horario
 int enable1 = 2;  //Enable sentido antihorario
 int enable2 = 3;  //Enable sentido horario
+int pwm1 = 4; //Activación sentido antihorario
+int pwm2 = 5; //Activación sentido horario
 
 
 //Pasos del encoder, relaciones entre el encoder y los engranajes y definición de posición inicial.

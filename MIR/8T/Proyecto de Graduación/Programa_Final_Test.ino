@@ -1,40 +1,41 @@
 
-//Señales del Encoder
-byte signalPin =18;
-byte signalPin_2 =19;
-byte signalPin_3 =20;
-byte posicion_actual=0;
+//Declaración de señales del encoder
+byte signalPin_1 =18; //Señal del Canal A del Encoder
+byte signalPin_2 =19; //Señal Index del Encoder
+byte signalPin_3 =20; //Señal Home del Encoder
 
 
-volatile long int home=0;
-volatile long int index =0;
-volatile long int EstaEnHome = 0;
+//Variables utilizadas para encontrar la POS Home en la rutina
+volatile long int home=0;                     //Es = 1 si el encoder se encuentra sobre el sensor optico de home.
+volatile long int index =0;                   //Es = 1 si el encoder da una rotación completa
+volatile long int EstaEnHome = 0;             //Si EstaEnHome = 1, la articulación esta en Home.
 
 
-volatile long int contador_A=0; //cuenta pulsos
-volatile long int contador_anterior=0;
+//Variable que llevará el conteo de pasos el Encoder
+volatile long int contador_A=0;             //Contador actual de pulsos del canal A del encoder
+volatile long int contador_anterior=0;      //Contador actual de pulsos del canal A del encoder
 
 
-//PMW Motores y Enables
-int pwm1 = 4;
-int pwm2 = 5;
-int enable1 = 2;
-int enable2 = 3;
-int EstoyBusy = 0;             //Variable que indica si la articulación se encuentra ejecutando alguna función
-int m = 1;                     //El motor inicia a la derecha, si se desea a izquierda se pone cualquier otro valor
+//Declaración de señales PMW y Enables para el motor.
+int enable1 = 2;      //Enable sentido antihorario
+int enable2 = 3;      //Enable sentido horario
+int pwm1 = 4;         //Activación sentido antihorario
+int pwm2 = 5;         //Activación sentido horario
+int EstoyBusy = 0;    //Variable que indica si la articulación se encuentra ejecutando alguna función
+int m = 1;            //El motor inicia a la derecha, si se desea a izquierda se pone cualquier otro valor
 
 
-//Pasos del encoder y relaciones mecanica del eje
-const int pasos_encoder=512;
-double relacion_eje_1=214.13;  //CAMBIAR ESTE VALOR PARA CADA ARTICULACION
+//Pasos del encoder y relación mecanica del eje
+const int pasos_encoder=512;   //Pasos por cada rotación del encoder.
+double relacion_eje_1=214.13;  //Relación mecánica de la articulación 1 del SCORBOT-ER9
 
 
 //Pasos para una rotación completa (360°) de la articulacion
 double relacion_encoder_1=pasos_encoder*relacion_eje_1;
 
 
-//Coordenadas en pasos
-double pasos_1 = 360/109634.56;
+//Factor para el cálculo de la posición instantánea
+double pasos_1 = 360/relacion_encoder_1;
 
 
 //Grados de los comandos
@@ -47,12 +48,12 @@ void setup(){
 
   Serial.begin(115200);
 
-  //Condifuracion de las señales del Encoder
-  pinMode(signalPin, INPUT_PULLUP);
+  //Definición de señales del Encoder
+  pinMode(signalPin_1, INPUT_PULLUP);
   pinMode(signalPin_2, INPUT_PULLUP);
   pinMode(signalPin_3, INPUT_PULLUP);
 
-  //Declaración de las variables del encoder
+  //Definición de las variables del motor
   pinMode(enable1, OUTPUT);
   pinMode(enable2, OUTPUT);
   pinMode(pwm1,OUTPUT);
@@ -69,7 +70,7 @@ void setup(){
     EstaEnHome = 0;
   }
 
-  //Declaración de pines interrupt
+  //Configuración de señales en pines interrupt.
   attachInterrupt(digitalPinToInterrupt(signalPin), enc_A, FALLING);
   attachInterrupt(digitalPinToInterrupt(signalPin_2), enc_index, CHANGE);
   attachInterrupt(digitalPinToInterrupt(signalPin_3), enc_home, CHANGE);  //Change porque se debe saber donde esta
@@ -85,11 +86,11 @@ void setup(){
      findhome();
   }
 
-  //Ahora ya esta en home Los contadores se deben colocar a cero
-  contador_A=0;
+  //Ahora que ya esta en Home, los contadores se deben colocar a cero
+  contador_A=0;             
   contador_anterior = 0;
-  m = 1; //se pone motor a la derecha por default
-  EstoyBusy = 0;
+  m = 1;                    
+  EstoyBusy = 0;            
 }
 
 //-------------------------------------------------------------------------------------------------------------------------
@@ -97,10 +98,10 @@ void setup(){
 
 void loop(){
   //datos para puerto serial
-  int incomingByte = 0; // for incoming serial data
-  String dataStr = "";
-  String comando = "";
-  String valor = "";
+  int incomingByte = 0;                           //Datos provenientes del puerto serial
+  String dataStr = "";                            //Analiza la longitud de los caracteres de los datos recibidos
+  String comando = "";                            //Alamcena los primeros 3 caracteres de los datos recibidos
+  String valor = "";                              //Valor toma los caracteres numericos de los datos recibidos
   
   if (Serial.available() != 0 ) {                 //EVALUACION EN EL MONITOR SERIAL
     if (EstoyBusy == 0){
@@ -109,7 +110,7 @@ void loop(){
       if (incomingByte!=0){
         if (incomingByte!=13) {                   //MIENTRAS NO SEA CR
            //Ya ha recibido un comando
-           if (dataStr.length() >= 3) {           //SI EL COMANDO TIENE ALMENOS 4 CARACTERES
+           if (dataStr.length() >= 3) {           //SI EL COMANDO TIENE ALMENOS 3 CARACTERES
             comando = dataStr.substring(0,3);     //TOMA LOS CARACTERES 0,1,2
 
             //Comandos válidos
@@ -120,11 +121,10 @@ void loop(){
 
 
             if (comando=='GOH') {                 //SI EL COMANDO RECIBIDO ES GOH
-              //vaya a home
-              EstoyBusy = 1;
+              EstoyBusy = 1;                      //Esta ejecutando una acción
               home = digitalRead(signalPin_3);    //Se lee el estado actual de home
-              index = digitalRead(signalPin_2);  //se lee el estado actual de index
-              if ((home==1) && (index==1)) {
+              index = digitalRead(signalPin_2);   //se lee el estado actual de index
+              if ((home==1) && (index==1)) {      //Si ambas señales están en 1, significa que el brazo ya se encuentra en Home
                 //ya esta en home
                 EstaEnHome = 1;
                 contador_A = 0;
@@ -132,11 +132,11 @@ void loop(){
               } else {
                 EstaEnHome = 0;
               }
-              if (EstaEnHome == 0) {
+              if (EstaEnHome == 0) {              //Si no, entonces ejecuta findhome() y luego envía el comando SiLoHizo
                 findhome();
                 SiLoHizo();
               }
-              dataStr = "";
+              dataStr = "";                       //Reinicio de variables
               comando = "";
               valor = "";
               valorN = 0;
@@ -144,18 +144,16 @@ void loop(){
             } else {
 
 
-              if (comando == 'GOL') {       //SI EL COMANDO RECIBIDO ES GOL
-                //vaya a la izquierda los siguientes digitos son el angulo
-                EstoyBusy = 1;
-                valor = dataStr.substring(3);
-                valorN = valor.toDouble()*(-1); //se pasa a negativo porque va hacia la izquierda
-                if ((valorN>-130) && (valorN<=0)) {
-                  // valor válido, si puede ejecutar el comando
+              if (comando == 'GOL') {                   //SI EL COMANDO RECIBIDO ES GOL
+                EstoyBusy = 1;                          //Esta ejecutando una acción
+                valor = dataStr.substring(3);           //Captura los últimos 3 digitos de los datos enviados
+                valorN = valor.toDouble()*(-1);         //Se pasa a negativo porque va a la izquierda
+                if ((valorN>-130) && (valorN<=0)) {     //Valor válido, si puede ejecutar el comando
                   GoAngulo();
                 } else {
                   NoLoHizo();
                 }
-                dataStr = "";
+                dataStr = "";                           //Reinicio de variables
                 comando = "";
                 valor = "";
                 valorN = 0;
@@ -163,18 +161,16 @@ void loop(){
               } else {
 
 
-                if (comando == 'GOR') {     //SI EL COMANDO RECIBIDO ES GOR
-                  //vaya a la derecha los siguientes digitos son el angulo
-                  EstoyBusy = 1;
-                  valor = dataStr.substring(3);
-                  valorN = valor.toDouble(); //se deja positivo porque va a la derecha
-                  if ((valorN<130) && (valorN>=0)) {
-                    // valor válido, si puede ejecutar el comando
+                if (comando == 'GOR') {                 //SI EL COMANDO RECIBIDO ES GOR
+                  EstoyBusy = 1;                        //Esta ejecutando una acción
+                  valor = dataStr.substring(3);         //Captura los últimos 3 digitos de los datos enviados
+                  valorN = valor.toDouble();            //Se deja positivo porque va a la derecha
+                  if ((valorN<130) && (valorN>=0)) {    //Valor válido, si puede ejecutar el comando
                     GoAngulo();
                   } else {
                     NoLoHizo();
                   }
-                  dataStr = "";
+                  dataStr = "";                         //Reinicio de variables
                   comando = "";
                   valor = "";
                   valorN = 0;
@@ -213,20 +209,17 @@ void loop(){
 }
 
 //-------------------------------------------------------------------------------------------------------------------------
+
+
 //FUNCION PARA ENVIAR LA POSICION FINAL AL MONITOR SERIAL
-//-------------------------------------------------------------------------------------------------------------------------
 void MandePos() {
   Serial.println(pasos_1*contador_A);
 }
-//-------------------------------------------------------------------------------------------------------------------------
 //FUNCION PARA INDICAR QUE SI HA EJECTUADO EL COMANDO
-//-------------------------------------------------------------------------------------------------------------------------
 void SiLoHizo() {
   Serial.println("OK");
 }
-//-------------------------------------------------------------------------------------------------------------------------
 //FUNCION PARA INDICAR QUE NO HA EJECTUADO EL COMANDO
-//-------------------------------------------------------------------------------------------------------------------------
 void NoLoHizo() {
   Serial.println("FAIL");
 }
@@ -270,7 +263,7 @@ void GoAngulo() {
 //-------------------------------------------------------------------------------------------------------------------------
 //FUNCIONES PARA LOS PINES INTERRUPT
 //-------------------------------------------------------------------------------------------------------------------------
-void enc_A(){
+void enc_A(){                               //Función para el conteo de pulsos provenientes del encoder
   if (m==1) {
     contador_A++;
   } else {
@@ -278,11 +271,9 @@ void enc_A(){
   }
 }
 
-
 void enc_index(){
    index=digitalRead(signalPin_2);
 }
-
 
 void enc_home(){
     home = digitalRead(signalPin_3);
