@@ -1,4 +1,5 @@
-/GeeKee CeeBee
+//http://geekeeceebee.com/DCMotor%20Position%20Tracking.html
+
 // ************ DEFINITIONS************
 
 int potPin = A3;          // Reference Potentiometer
