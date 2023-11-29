@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-11-29T06:17:47.129Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="D_D31Y54MPyiogQNMmql" version="22.1.4" type="github">
+<mxfile host="app.diagrams.net" modified="2023-11-29T06:25:15.823Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="lL8QkF6zj8MQp4Bs3s1j" version="22.1.4" type="github">
   <diagram name="Page-1" id="zidWxDZTBbv9Yz6WOGqk">
     <mxGraphModel dx="778" dy="519" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
       <root>
@@ -2273,16 +2273,16 @@
         <mxCell id="1H5KosDCN3i-o-nQhYtA-47" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;Separación de caracteres&lt;br&gt;comando: &lt;/span&gt;GOL&lt;br&gt;&lt;span style=&quot;font-weight: 400;&quot;&gt;valor: &lt;/span&gt;30" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="2158" y="2167.25" width="123" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="1H5KosDCN3i-o-nQhYtA-58" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;GOH&lt;/span&gt;&lt;br&gt;Go Home" style="ellipse;whiteSpace=wrap;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="1H5KosDCN3i-o-nQhYtA-58" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;GOH&lt;/span&gt;&lt;br&gt;Go Home" style="ellipse;whiteSpace=wrap;html=1;fontSize=9;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="2019" y="2280" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="1H5KosDCN3i-o-nQhYtA-60" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;GOR&lt;/span&gt;&lt;br&gt;Go Right" style="ellipse;whiteSpace=wrap;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="1H5KosDCN3i-o-nQhYtA-60" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;GOR&lt;/span&gt;&lt;br&gt;Go Right" style="ellipse;whiteSpace=wrap;html=1;fontSize=9;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="2126" y="2280" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="1H5KosDCN3i-o-nQhYtA-64" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;GOL&lt;/span&gt;&lt;br&gt;Go Left" style="ellipse;whiteSpace=wrap;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="1H5KosDCN3i-o-nQhYtA-64" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;GOL&lt;/span&gt;&lt;br&gt;Go Left" style="ellipse;whiteSpace=wrap;html=1;fontSize=9;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="2229" y="2280" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="1H5KosDCN3i-o-nQhYtA-66" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;REP&lt;br&gt;&lt;/span&gt;Report Position" style="ellipse;whiteSpace=wrap;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="1H5KosDCN3i-o-nQhYtA-66" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;REP&lt;br&gt;&lt;/span&gt;Report Position" style="ellipse;whiteSpace=wrap;html=1;fontSize=9;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="2339" y="2280" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="1H5KosDCN3i-o-nQhYtA-81" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="1H5KosDCN3i-o-nQhYtA-76" target="1H5KosDCN3i-o-nQhYtA-47">
