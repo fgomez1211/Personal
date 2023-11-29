@@ -60,8 +60,9 @@ void setup(){
   pinMode(pwm2,OUTPUT);
 
   //Se inicia sabiendo en que estado esta Home
-  home = digitalRead(signalPin_3); //Se lee el estado actual de home
   index = digitalRead(signalPin_2);  //se lee el estado actual de index
+  home = digitalRead(signalPin_3); //Se lee el estado actual de home
+  Serial.println("INICIANDO");
 
   //Validacion si cuando inicia el brazo, se encuentra en Home.
   if ((home==1) && (index==1)) {    //Ya esta en home
@@ -71,8 +72,8 @@ void setup(){
   }
 
   //Configuración de señales en pines interrupt.
-  attachInterrupt(digitalPinToInterrupt(signalPin), enc_A, FALLING);
-  attachInterrupt(digitalPinToInterrupt(signalPin_2), enc_index, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(signalPin_1), enc_A, FALLING);
+  attachInterrupt(digitalPinToInterrupt(signalPin_2), enc_index, RISING);
   attachInterrupt(digitalPinToInterrupt(signalPin_3), enc_home, CHANGE);  //Change porque se debe saber donde esta
 
   //Activa los Enable del driver, dejando los PWM  para enceder/apagar el motor.
@@ -98,29 +99,31 @@ void setup(){
 
 void loop(){
   //datos para puerto serial
-  int incomingByte = 0;                           //Datos provenientes del puerto serial
-  String dataStr = "";                            //Analiza la longitud de los caracteres de los datos recibidos
+                          //Datos provenientes del puerto serial
+  String dataStr;                            //Analiza la longitud de los caracteres de los datos recibidos
   String comando = "";                            //Alamcena los primeros 3 caracteres de los datos recibidos
   String valor = "";                              //Valor toma los caracteres numericos de los datos recibidos
-  
-  if (Serial.available() != 0 ) {                 //EVALUACION EN EL MONITOR SERIAL
+  if (Serial.available() > 0 ) {                 //EVALUACION EN EL MONITOR SERIAL
     if (EstoyBusy == 0){
       //Leer un byte
-      incomingByte = Serial.read();
-      if (incomingByte!=0){
-        if (incomingByte!=13) {                   //MIENTRAS NO SEA CR
-           //Ya ha recibido un comando
-           if (dataStr.length() >= 3) {           //SI EL COMANDO TIENE ALMENOS 3 CARACTERES
-            comando = dataStr.substring(0,3);     //TOMA LOS CARACTERES 0,1,2
-
+      char incomingByte = Serial.read();
+      dataStr += incomingByte;
+      delay(2);
+      }
+      if (dataStr.length() >0) {
+          char comando = dataStr.charAt(0);
+          dataStr.remove(0,1);
+          double valor = dataStr.toDouble();
+          dataStr="";
+          } 
             //Comandos válidos
-            //GOH = Go Home
-            //GOL###.#### = Go Left ###.#### grados
-            //GOR###.#### = Go Right ###.#### grados
-            //REP = Return Position in Degrees
+            //H = Go Home
+            //L###.#### = Go Left ###.#### grados
+            //R###.#### = Go Right ###.#### grados
+            //P = Return Position in Degrees
 
-
-            if (comando=='GOH') {                 //SI EL COMANDO RECIBIDO ES GOH
+            //Serial.println(comando=="REP");
+            if (comando=="H") {                 //SI EL COMANDO RECIBIDO ES GOH
               EstoyBusy = 1;                      //Esta ejecutando una acción
               home = digitalRead(signalPin_3);    //Se lee el estado actual de home
               index = digitalRead(signalPin_2);   //se lee el estado actual de index
@@ -144,7 +147,7 @@ void loop(){
             } else {
 
 
-              if (comando == 'GOL') {                   //SI EL COMANDO RECIBIDO ES GOL
+              if (comando == "L") {                   //SI EL COMANDO RECIBIDO ES GOL
                 EstoyBusy = 1;                          //Esta ejecutando una acción
                 valor = dataStr.substring(3);           //Captura los últimos 3 digitos de los datos enviados
                 valorN = valor.toDouble()*(-1);         //Se pasa a negativo porque va a la izquierda
@@ -161,10 +164,12 @@ void loop(){
               } else {
 
 
-                if (comando == 'GOR') {                 //SI EL COMANDO RECIBIDO ES GOR
+                if (comando == "R") {                 //SI EL COMANDO RECIBIDO ES GOR
+                  
                   EstoyBusy = 1;                        //Esta ejecutando una acción
                   valor = dataStr.substring(3);         //Captura los últimos 3 digitos de los datos enviados
                   valorN = valor.toDouble();            //Se deja positivo porque va a la derecha
+                  Serial.println(valorN);
                   if ((valorN<130) && (valorN>=0)) {    //Valor válido, si puede ejecutar el comando
                     GoAngulo();
                   } else {
@@ -178,7 +183,7 @@ void loop(){
                 } else {
 
 
-                  if (comando == 'REP') {
+                  if (comando == "P") {
                     // Deme posición actual (positivo derecha, negativo izquierda)
                     EstoyBusy=1;
                     MandePos();
@@ -198,15 +203,9 @@ void loop(){
               }
             }
            }
-          } else {
-          if (incomingByte!=10) {
-            dataStr = dataStr + incomingByte;
-          }
-        }  
-      }
-    }//Termina, EstoyBusy != 0.
+
+       
   }
-}
 
 //-------------------------------------------------------------------------------------------------------------------------
 
@@ -250,11 +249,13 @@ void GoAngulo() {
       digitalWrite(pwm2,HIGH); //vaya a la izquierda
     }
     PrecisionActual = abs((pasos_1*contador_A) - valorN);
+    Serial.println(PrecisionActual);
   }
+  Serial.print("Termino");
   //se salio, o porque llego o porque se paso
   digitalWrite(pwm2,LOW);
   digitalWrite(pwm1,LOW);
-  Serial.print(pasos_1*contador_A);  //envie la posicion en la que se quedo
+  Serial.println(pasos_1*contador_A);  //envie la posicion en la que se quedo
 }
 //-------------------------------------------------------------------------------------------------------------------------
 
@@ -272,16 +273,13 @@ void enc_A(){                               //Función para el conteo de pulsos 
 }
 
 void enc_index(){
-   index=digitalRead(signalPin_2);
-}
+    index = 1;
+  }
 
 void enc_home(){
     home = digitalRead(signalPin_3);
     if (home==1) {
-       index=digitalRead(signalPin_2);
-       if ((home==1) && (index==1)) {
-        EstaEnHome=1;
-       }
+      index = 0;
     }
 }
 //-------------------------------------------------------------------------------------------------------------------------
@@ -298,6 +296,7 @@ void findhome(){
   //asegurar que los motores no se estan moviendo
   digitalWrite(pwm2,LOW);
   digitalWrite(pwm1,LOW);
+
   home = digitalRead(signalPin_3);
   index=digitalRead(signalPin_2);
   if ((home==1) && (index==1)) {
@@ -310,9 +309,15 @@ void findhome(){
     contador_anterior=-999;
     contador_A=0;
   }
-  
+  m=1;
   while (home != 1 && vuelta !=1) {
     delay(100);
+ /* Serial.print("H,I,C=");
+  Serial.print(home);
+  Serial.print(",");
+  Serial.print(index);
+  Serial.print(",");
+  Serial.println(contador_A);*/
     //active motor en una direccion hasta que encuentre home, si no lo encuentra active el motor en la direccion inversa
     if(m==1){
       digitalWrite(pwm2,LOW); 
@@ -355,6 +360,7 @@ void findhome(){
       digitalWrite(pwm2,LOW);
       vuelta=1;
       EstaEnHome = 1;
+      Serial.print("Salio");
     }
   }
 }
