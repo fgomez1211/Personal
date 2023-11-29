@@ -1,6 +1,5 @@
-
-//--------------------------------------------------------------------------------------------------------------------------------------------
-//CODIGO PARA ARTICULACION 2
+//---------------------------------------------------
+//Código para Articulacion 2
 
 //Declaración de señales del encoder
 byte signalPin_1 =18; //Señal del Canal A del Encoder
@@ -9,46 +8,44 @@ byte signalPin_3 =20; //Señal Home del Encoder
 
 
 //Variables utilizadas para encontrar la POS Home en la rutina
-volatile long int home=0;
-volatile long int index =0;
-volatile long int contador_anterior=0;
+volatile long int home=0;                     //Es = 1 si el encoder se encuentra sobre el sensor optico de home.
+volatile long int index =0;                   //Es = 1 si el encoder da una rotación completa
+volatile long int EstaEnHome = 0;             //Si EstaEnHome = 1, la articulación esta en Home.
 
 
 //Variable que llevará el conteo de pasos el Encoder
-volatile long int contador_A=0;
+volatile long int contador_A=0;             //Contador actual de pulsos del canal A del encoder
+volatile long int contador_anterior=0;      //Contador actual de pulsos del canal A del encoder
 
 
 //Declaración de señales PMW y Enables para el motor.
-int enable1 = 2;  //Enable sentido antihorario
-int enable2 = 3;  //Enable sentido horario
-int pwm1 = 4; //Activación sentido antihorario
-int pwm2 = 5; //Activación sentido horario
+int enable1 = 2;      //Enable sentido antihorario
+int enable2 = 3;      //Enable sentido horario
+int pwm1 = 4;         //Activación sentido antihorario
+int pwm2 = 5;         //Activación sentido horario
+int EstoyBusy = 0;    //Variable que indica si la articulación se encuentra ejecutando alguna función
+int m = 1;            //El motor inicia a la derecha, si se desea a izquierda se pone cualquier otro valor
 
 
-//Pasos del encoder, relaciones entre el encoder y los engranajes y definición de posición inicial.
-const int pasos_encoder=512;
-double relacion_articulacion_2=243.8;
-double Posicion_actual=0;
-double Nueva_posicion=0;
+//Pasos del encoder y relación mecanica del eje
+const int pasos_encoder=512;   //Pasos por cada rotación del encoder.
+double relacion_eje_1=214.13;  //Relación mecánica de la articulación 1 del SCORBOT-ER9
 
 
-//Pasos para una rotación completa de cada articulacion
-double relacion_encoder_1=pasos_encoder*relacion_articulacion_2;
+//Pasos para una rotación completa (360°) de la articulacion
+double relacion_encoder_1=pasos_encoder*relacion_eje_1;
 
-//Coordenadas de prueba en grados
-double  grados_eslabon_1 =0;
 
-//Coordenadas en pasos
-double pasos_1 = 0;
+//Factor para el cálculo de la posición instantánea
+double pasos_1 = 360/relacion_encoder_1;
 
-//Variables para la habilitación de la rotación horario y antihorario
-int enable_positivo = false;
-int enable_negativo = false;
-double pasos_1_positivo = 0;
-double pasos_1_negativo = 0;
 
-//--------------------------------------------------------------------------------------------------------------------------------------------
+//Grados de los comandos
+double valorN = 0;
+double Precision = 0.5; //Precisión de llegada = 0.5 grados se puede incrementar la presición disminuyendo este valor
 
+
+//-------------------------------------------------------------------------------------------------------------------------
 void setup(){
 
   Serial.begin(115200);
@@ -64,175 +61,279 @@ void setup(){
   pinMode(pwm1,OUTPUT);
   pinMode(pwm2,OUTPUT);
 
+  //Se inicia sabiendo en que estado esta Home
+  index = digitalRead(signalPin_2);  //se lee el estado actual de index
+  home = digitalRead(signalPin_3); //Se lee el estado actual de home
+  Serial.println("INICIANDO");
+
+  //Validacion si cuando inicia el brazo, se encuentra en Home.
+  if ((home==1) && (index==1)) {    //Ya esta en home
+    EstaEnHome = 1; 
+  } else {
+    EstaEnHome = 0;
+  }
+
   //Configuración de señales en pines interrupt.
   attachInterrupt(digitalPinToInterrupt(signalPin_1), enc_A, FALLING);
-  attachInterrupt(digitalPinToInterrupt(signalPin_2), enc_index, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(signalPin_3), enc_home, FALLING);
+  attachInterrupt(digitalPinToInterrupt(signalPin_2), enc_index, RISING);
+  attachInterrupt(digitalPinToInterrupt(signalPin_3), enc_home, CHANGE);  //Change porque se debe saber donde esta
 
   //Activa los Enable del driver, dejando los PWM  para enceder/apagar el motor.
   digitalWrite(enable1, HIGH); 
   digitalWrite(enable2, HIGH);
-
-  //Se apagan ambos motores  
   digitalWrite(pwm2,LOW);
   digitalWrite(pwm1,LOW);
 
-  //Impresión de etiquetas en monitor serial.
-  Serial.println("Iniciando rutina...");
-  delay(10);
-  Serial.println("Buscando POS Home...");
-  Serial.println(grados_eslabon_1);
-
-  //Rutina para encontrar la POS Home. 
-  findhome();
-  Serial.println("POS Home Encontrada!");
-  digitalWrite(pwm2,LOW); //Se apaga el motor para evitar que se mueva de su posición home.
-  digitalWrite(pwm1,LOW);
-  contador_A=0;   //Reset del contador de pasos del encoder. Esta variable se utilizara para el movimiento de la articulación.
-  delay(1000);
-
-}
-
-//--------------------------------------------------------------------------------------------------------------------------------------------
-
-void loop(){
-
-
-//--------------------------------------------------------------------------------------------------------------------------------------------
-// INICIO DE COMUNICACION SERIAL
-  if (Serial.available() > 0) {   // Revisa si hay un valor para leer en el puerto serial.
-      grados_eslabon_1 = Serial.parseInt(); //Leer los grados desde el puerto serial.
-      delay(1000);
-      }
-      else if(grados_eslabon_1>0){
-        pasos_1_positivo = (grados_eslabon_1/360) * relacion_encoder_1; //Calculo de pasos a moverse según el valor leido en el puerto serial
-        enable_positivo = true;
-      }
-      else if(grados_eslabon_1<0){
-        grados_eslabon_1 = grados_eslabon_1*(-1);
-        pasos_1_negativo = (grados_eslabon_1/360) * relacion_encoder_1;
-        enable_negativo = true;
-        }
-        else{
-          Serial.println("Esperando instruccion.......");
-          delay(1000);
-        }
-
-
-//--------------------------------------------------------------------------------------------------------------------------------------------
-// SI EL VALOR INGRESADO EN EL SERIAL ES POSITIVO
-  if(enable_positivo==true){
-    if(grados_eslabon_1 >=0){
-      if (contador_A< pasos_1_positivo){
-          digitalWrite(pwm1,LOW);
-          digitalWrite(pwm2,HIGH);
-          Serial.print(contador_A);
-          Serial.print(" , ");
-          Serial.println(pasos_1);
-          }
-          else{
-            enable_positivo=false;
-            pasos_1=0;
-            contador_A=0;
-            grados_eslabon_1=0;
-            digitalWrite(pwm1,LOW);
-            digitalWrite(pwm2, LOW);
-            Serial.println("Posicion alcanzada, esperando nueva instruccion... ");
-            delay(1000);
-            }
-        }
+  //Si la articulación no se encuentra en Home, ejecuta la siguiente rutina.
+  Serial.println("INICIALIZANDO...")
+  if (EstaEnHome==0) {
+     findhome();
   }
 
+  //Ahora que ya esta en Home, los contadores se deben colocar a cero
+  contador_A=0;             
+  contador_anterior = 0;
+  m = 1;                    
+  EstoyBusy = 0;            
+}
 
-//--------------------------------------------------------------------------------------------------------------------------------------------
-// SI EL VALOR INGRESADO EN EL SERIAL ES NEGATIVO
-  if(enable_negativo==true){
-    if(grados_eslabon_1 > 0){
-      if (contador_A < pasos_1_negativo){
-          digitalWrite(pwm2,LOW);
-          digitalWrite(pwm1, HIGH);
+//-------------------------------------------------------------------------------------------------------------------------
+
+
+void loop(){
+  //datos para puerto serial
+                          //Datos provenientes del puerto serial
+  String dataStr;                            //Analiza la longitud de los caracteres de los datos recibidos
+  String comando = "";                            //Alamcena los primeros 3 caracteres de los datos recibidos
+  String valor = "";                              //Valor toma los caracteres numericos de los datos recibidos
+  while (Serial.available()) {
+    char incomingByte = Serial.read();
+    dataStr += incomingByte;
+    delay(2);
+  }
+  if (dataStr.length() > 0 ) {                 //EVALUACION EN EL MONITOR SERIAL
+    if (EstoyBusy == 0){
+      //Ya ha recibido un comando
+      if (dataStr.length() >= 3) {           //SI EL COMANDO TIENE ALMENOS 3 CARACTERES
+        comando = dataStr.substring(0,3);     //TOMA LOS CARACTERES 0,1,2
+        //Comandos válidos
+        //GOH = Go Home
+        //GOL###.#### = Go Left ###.#### grados
+        //GOR###.#### = Go Right ###.#### grados
+        //REP = Return Position in Degrees
+        if (comando=="GOH") {                 //SI EL COMANDO RECIBIDO ES GOH
+          EstoyBusy = 1;                      //Esta ejecutando una acción
+          home = digitalRead(signalPin_3);    //Se lee el estado actual de home
+          index = digitalRead(signalPin_2);   //se lee el estado actual de index
+          if ((home==1) && (index==1)) {      //Si ambas señales están en 1, significa que el brazo ya se encuentra en Home
+            //ya esta en home
+            EstaEnHome = 1;
+            contador_A = 0;
+            contador_anterior = 0;
+          } else {
+            EstaEnHome = 0;
           }
-          else{
-            enable_negativo = false;
-            pasos_1=0;
-            contador_A=0;
-            grados_eslabon_1=0;
-            digitalWrite(pwm1,LOW);
-            digitalWrite(pwm2, LOW);
-            Serial.println("Posicion alcanzada, esperando nueva instruccion... ");
-            delay(1000);
-            }            
+          if (EstaEnHome == 0) {              //Si no, entonces ejecuta findhome() y luego envía el comando SiLoHizo
+            findhome();
+            SiLoHizo();
+          }
+          dataStr = "";                       //Reinicio de variables
+          comando = "";
+          valor = "";
+          valorN = 0;
+          EstoyBusy = 0;
+        } else {
+          if (comando == "GOL") {                   //SI EL COMANDO RECIBIDO ES GOL
+            EstoyBusy = 1;                          //Esta ejecutando una acción
+            valor = dataStr.substring(3);           //Captura los últimos 3 digitos de los datos enviados
+            valorN = valor.toDouble()*(-1);         //Se pasa a negativo porque va a la izquierda
+            if ((valorN>-130) && (valorN<=0)) {     //Valor válido, si puede ejecutar el comando
+              GoAngulo();
+            } else {
+              NoLoHizo();
+            }
+            dataStr = "";                           //Reinicio de variables
+            comando = "";
+            valor = "";
+            valorN = 0;
+            EstoyBusy = 0;
+          } else {
+            if (comando == "GOR") {                 //SI EL COMANDO RECIBIDO ES GOR
+              EstoyBusy = 1;                        //Esta ejecutando una acción
+              valor = dataStr.substring(3);         //Captura los últimos 3 digitos de los datos enviados
+              valorN = valor.toDouble();            //Se deja positivo porque va a la derecha
+              Serial.println(valorN);
+              if ((valorN<130) && (valorN>=0)) {    //Valor válido, si puede ejecutar el comando
+                GoAngulo();
+              } else {
+                NoLoHizo();
+              }
+              dataStr = "";                         //Reinicio de variables
+              comando = "";
+              valor = "";
+              valorN = 0;
+              EstoyBusy = 0;
+            } else {
+              if (comando == "REP") {
+                // Deme posición actual (positivo derecha, negativo izquierda)
+                EstoyBusy=1;
+                MandePos();
+                dataStr = "";
+                comando = "";
+                valor = "";
+                valorN = 0;
+                EstoyBusy = 0;
+              } else {
+                dataStr = "";
+                comando = "";
+                valor = "";
+                valorN = 0;
+                EstoyBusy = 0;
+              }
+            }
+          }
+        }
       }
+    }//Termina, EstoyBusy != 0.
+  }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+
+//FUNCION PARA ENVIAR LA POSICION FINAL AL MONITOR SERIAL
+void MandePos() {
+  Serial.println(pasos_1*contador_A);
+}
+//FUNCION PARA INDICAR QUE SI HA EJECTUADO EL COMANDO
+void SiLoHizo() {
+  Serial.println("OK");
+}
+//FUNCION PARA INDICAR QUE NO HA EJECTUADO EL COMANDO
+void NoLoHizo() {
+  Serial.println("FAIL");
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------
+//FUNCION PARA MOVER LA ARTICULACION SEGUN EL COMANDO ENVIADO
+//-------------------------------------------------------------------------------------------------------------------------
+void GoAngulo() {
+  //para ir a la izquierda o a la derecha antes de encender el motor saber donde estoy para moverme hacia ese lugar
+  double PrecisionActual = 0;
+  double PrecisionInicial = 0;
+  double DondeEstoy = pasos_1*contador_A;
+  PrecisionInicial = abs(DondeEstoy - valorN);
+  PrecisionActual = PrecisionInicial;
+  if (DondeEstoy < valorN) { //debe ir a la derecha
+    m = 1;
+  } else { //debe ir a la izquierda
+    m = -1;
+  }
+
+  while ((PrecisionActual > Precision) && (PrecisionActual<=PrecisionInicial)) {
+    if(m==1){
+      digitalWrite(pwm2,LOW); 
+      digitalWrite(pwm1,HIGH); //vaya a la derecha
+    }else{
+      digitalWrite(pwm1,LOW); 
+      digitalWrite(pwm2,HIGH); //vaya a la izquierda
+    }
+    PrecisionActual = abs((pasos_1*contador_A) - valorN);
+    Serial.println(PrecisionActual);
+  }
+  Serial.print("Termino");
+  //se salio, o porque llego o porque se paso
+  digitalWrite(pwm2,LOW);
+  digitalWrite(pwm1,LOW);
+  Serial.println(pasos_1*contador_A);  //envie la posicion en la que se quedo
+}
+//-------------------------------------------------------------------------------------------------------------------------
+
+
+
+//-------------------------------------------------------------------------------------------------------------------------
+//FUNCIONES PARA LOS PINES INTERRUPT
+//-------------------------------------------------------------------------------------------------------------------------
+void enc_A(){                               //Función para el conteo de pulsos provenientes del encoder
+  if (m==1) {
+    contador_A++;
+  } else {
+    contador_A--;
+  }
+}
+
+void enc_index(){
+    index = 1;
+  }
+
+void enc_home(){
+    home = digitalRead(signalPin_3);
+    if (home==1) {
+      index = 0;
     }
 }
-
-//--------------------------------------------------------------------------------------------------------------------------------------------
-
-// Función interrupt para el Canal A del encoder.
-//--------------------------------------
-void enc_A(){
-    contador_A++;
-}
-//--------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------
 
 
-// Función interrupt para el Canal Index del encoder
-//--------------------------------------
-void enc_index(){
-    index++;
-}
-//--------------------------------------
-
-
-// Función interrupt para el Canal Home del encoder
-//--------------------------------------
-void enc_home(){
-    home++;
-    index=0;
-}
-//--------------------------------------
-
-
-//--------------------------------------------------------------------------------------------------------------------------------------------
-
-// FUNCION: findhome(). Ejecuta una rutina para encontrar la POS Home de la articulación.
-// Para encontrar la POS Home la articulación debe de encontrar un pulso del pin Home. 
-// Mientras detecta el pulso, debe encontrar un siguiente pulso en Index.
-// Cuando el brazo llega a un extremo de su rotación y no detecta el POS Home, 
-// este valida si tiene la misma posición que la anterior
-// si esto sucede 5 veces, la articulación se movera hacia el otro sentido para intentar buscar POS Home.
-
-//--------------------------------------------------------------------------------------------------------------------------------------------
-
-
+//-------------------------------------------------------------------------------------------------------------------------
+//FUNCION PARA ENCONTRA LA POSICION HOME
+//-------------------------------------------------------------------------------------------------------------------------
 void findhome(){
-  int m = 1;                          //Variable utilizada para indicar que se mueva el motor.
-  int vuelta = -1;                    //cantidad de vueltas del encoder.
-  int retry=0;                        //Contador de intentos una vez la articulacion llegue a un tope
-  contador_anterior=-999;
-  contador_A=0;                       //Pulsos provenientes del encoder canal B
-  index=0;                            //Pulso proveniente del encoder, index
-  home = 0;                           //PUlso proveniente del encoder, home
+  int vuelta = -1;
+  int retry=0;
+  int conteocero = 0;
+  int yaenfinal = -1;
+  //asegurar que los motores no se estan moviendo
+  digitalWrite(pwm2,LOW);
+  digitalWrite(pwm1,LOW);
 
+  home = digitalRead(signalPin_3);
+  index=digitalRead(signalPin_2);
+  if ((home==1) && (index==1)) {
+    vuelta = 1;
+    EstaEnHome = 1;
+    contador_anterior= 0;
+    contador_A = 0;    
+  }
+  else {
+    contador_anterior=-999;
+    contador_A=0;
+  }
+  m=1;
   while (home != 1 && vuelta !=1) {
     delay(100);
+ /* Serial.print("H,I,C=");
+  Serial.print(home);
+  Serial.print(",");
+  Serial.print(index);
+  Serial.print(",");
+  Serial.println(contador_A);*/
+    //active motor en una direccion hasta que encuentre home, si no lo encuentra active el motor en la direccion inversa
     if(m==1){
-      digitalWrite(pwm2,LOW);
-      digitalWrite(pwm1,HIGH);
+      digitalWrite(pwm2,LOW); 
+      digitalWrite(pwm1,HIGH); //vaya a la derecha
     }else{
-      digitalWrite(pwm1,LOW);
-      digitalWrite(pwm2,HIGH);
+      digitalWrite(pwm1,LOW); 
+      digitalWrite(pwm2,HIGH); //vaya a la izquierda
     }
-
+    // si el contador sigue estando en el mismo lugar, el motor no se esta moviendo, si lo hace mas de cinco veces debe cambiar de direccion
     if(contador_A==contador_anterior && contador_A!=0){
       retry++;
-    }    
-
-    if(contador_A!=contador_anterior){
-      contador_anterior=contador_A;
     }
-
-    if(retry>5){                            //Funcion para el conteo de los intentos
+    if ((contador_anterior==0) && (contador_A==0) && (m==1)) {
+      conteocero++;
+    }
+    if (conteocero>10) {
+      //ya paso once veces por aqui, quiere decir que inicio en un extremo y debe cambiar dirección
+      //Esto solo puede pasar una vez porque arranco en el extremo derecho, y debe buscar home a la izquierda, 
+      //si no encuentra home a la izquierda regresará otra vez por eso se resetea conteocero, 
+      //para que cuando regrese, vuelva a iniciar si no encuentra el final
+      m = -1;
+      conteocero = 0;
+    }
+    contador_anterior=contador_A;
+    if(retry>5){
       if(m==1){
         m=-1;
       }else{
@@ -241,31 +342,19 @@ void findhome(){
       retry=0;
       contador_A=0;
       contador_anterior=0;
-      index=0;
-      home=0;
+      index = digitalRead(signalPin_2);
+      home = digitalRead(signalPin_3);
     }
-
-    if(home>0){                             //Funcion para encontrar el home
+    
+    if(home>0 && index>0){
       digitalWrite(pwm1,LOW);
       digitalWrite(pwm2,LOW);
       vuelta=1;
+      EstaEnHome = 1;
+      Serial.print("POS Home Encontrada");
     }
-    }
-    Serial.print(contador_A);
-    Serial.print(" , ");
-    Serial.print(contador_anterior);
-    Serial.print(" , ");
-    Serial.print(home);
-    Serial.print(" , ");
-    Serial.print(m);
-    Serial.print(" , ");
-    Serial.print(index);
-    Serial.print(" , ");  
-    Serial.println(vuelta);
+  }
 }
     
 
-
-// */
-  
     
