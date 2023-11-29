@@ -83,17 +83,10 @@ void setup(){
   digitalWrite(pwm1,LOW);
 
   //Si la articulación no se encuentra en Home, ejecuta la siguiente rutina.
-  delay(2);
-  Serial.print(" ");
-  Serial.println("Inicializando Controlador...");
-  Serial.println("Buscando Home.....");
+  Serial.println("INICIALIZANDO...")
   if (EstaEnHome==0) {
      findhome();
-     }else{
-      Serial.println("POS Home Encontrada");
-     }
-  delay(100);
-  Serial.println("Controlador listo para recibir comandos....");
+  }
 
   //Ahora que ya esta en Home, los contadores se deben colocar a cero
   contador_A=0;             
@@ -152,7 +145,7 @@ void loop(){
             EstoyBusy = 1;                          //Esta ejecutando una acción
             valor = dataStr.substring(3);           //Captura los últimos 3 digitos de los datos enviados
             valorN = valor.toDouble()*(-1);         //Se pasa a negativo porque va a la izquierda
-            if ((valorN>-160) && (valorN<=0)) {     //Valor válido, si puede ejecutar el comando
+            if ((valorN>-130) && (valorN<=0)) {     //Valor válido, si puede ejecutar el comando
               GoAngulo();
             } else {
               NoLoHizo();
@@ -356,7 +349,7 @@ void findhome(){
       digitalWrite(pwm2,LOW);
       vuelta=1;
       EstaEnHome = 1;
-      Serial.println("POS Home Encontrada");
+      Serial.print("POS Home Encontrada");
     }
   }
 }
