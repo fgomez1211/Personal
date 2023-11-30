@@ -1,0 +1,5 @@
+{
+    "board": "arduino:sam:arduino_due_x_dbg",
+    "sketch": "MIR/8T/Proyecto de Graduación/Programa_Final_3_Test.ino",
+    "port": "/dev/tty.usbmodem101"
+}

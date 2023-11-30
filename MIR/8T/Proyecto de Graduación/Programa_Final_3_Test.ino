@@ -1,3 +1,6 @@
+//--------------------------------------------------------------------------------------------------------------------------------------------
+//CODIGO PARA ARTICULACION 3
+
 
 //Declaración de señales del encoder
 byte signalPin_1 =18; //Señal del Canal A del Encoder
@@ -27,7 +30,7 @@ int m = 1;            //Variable que indica el sentido de rotación. Default es 
 
 //Pasos del encoder y relación mecanica del eje
 const int pasos_encoder=512;   //Pasos por cada rotación del encoder.
-double relacion_eje_1=214.13;  //Relación mecánica de la articulación 1 del SCORBOT-ER9
+double relacion_eje_1=213.33;  //Relación mecánica de la articulación 3 del SCORBOT-ER9
 
 
 //Pasos para una rotación completa (360°) de la articulacion
@@ -62,6 +65,7 @@ void setup(){
   //Se inicia sabiendo en que estado esta Home
   index = digitalRead(signalPin_2);  //se lee el estado actual de index
   home = digitalRead(signalPin_3); //Se lee el estado actual de home
+  Serial.println("INICIANDO");
 
   //Validacion cuando inicia el brazo, se encuentra en Home.
   if ((home==1) && (index==1)) {    //Ya esta en home
@@ -83,8 +87,7 @@ void setup(){
 
   //Si la articulación no se encuentra en Home, ejecuta la siguiente rutina.
   delay(2);
-  Serial.println(" ");
-  Serial.println(" ");
+  Serial.print(" ");
   Serial.println("Inicializando Controlador...");
   Serial.println("Buscando Home.....");
   if (EstaEnHome==0) {
@@ -155,7 +158,7 @@ void loop(){
                 EstoyBusy = 1;                          //Esta ejecutando una acción
                 valor = dataStr.substring(3);           //ALMACENA LOS CARACTERES EN VALOR A PARTIR DEL TERCERO
                 valorN = valor.toDouble()*(-1);         //Se pasa a negativo porque va a la izquierda
-                if ((valorN>-169) && (valorN<=0)) {     //Valor válido, si puede ejecutar el comando
+                if ((valorN>-160) && (valorN<=0)) {     //Valor válido, si puede ejecutar el comando
                   GoAngulo();
                 } else {
                   NoLoHizo();
@@ -171,7 +174,7 @@ void loop(){
                     EstoyBusy = 1;                        //Esta ejecutando una acción
                     valor = dataStr.substring(3);         //ALMACENA LOS CARACTERES EN VALOR A PARTIR DEL TERCERO
                     valorN = valor.toDouble();            //Se deja positivo porque va a la derecha
-                    if ((valorN<115) && (valorN>=0)) {    //Valor válido, si puede ejecutar el comando
+                    if ((valorN<130) && (valorN>=0)) {    //Valor válido, si puede ejecutar el comando
                       GoAngulo();
                     } else {
                       NoLoHizo();
@@ -209,9 +212,7 @@ void loop(){
 //-------------------------------------------------------------------------------------------------------------------------
 //FUNCION PARA ENVIAR LA POSICION FINAL AL MONITOR SERIAL
 void MandePos() {
-  Serial.print("Posición Actual: ");
-  Serial.print(pasos_1*contador_A);
-  Serial.println("°");
+  Serial.println(pasos_1*contador_A);
 }
 //FUNCION PARA INDICAR QUE SI HA EJECTUADO EL COMANDO
 void SiLoHizo() {
@@ -249,12 +250,14 @@ void GoAngulo() {
       digitalWrite(pwm2,HIGH); //SE MUEVE A LA DERECHA
     }
     PrecisionActual = abs((pasos_1*contador_A) - valorN);
-    Serial.println(pasos_1*contador_A);
+    Serial.println(PrecisionActual);
   }
+
+  Serial.print("Posición Alcanzada: ");
+  //se salio, o porque llego o porque se paso
   digitalWrite(pwm2,LOW);                    //PONE EN BAJO LA SEÑAL DE LOS MOTORES
   digitalWrite(pwm1,LOW);
-  Serial.print("Posición Alcanzada: ");
-  Serial.println(pasos_1*contador_A);
+  Serial.println(pasos_1*contador_A);        //ENVIA LA POSICION FINAL
 }
 //-------------------------------------------------------------------------------------------------------------------------
 
@@ -363,8 +366,6 @@ void findhome(){
       Serial.println("POS Home Encontrada");
     }
   }
-  contador_anterior= 0;
-  contador_A = 0;
 }
 
 
@@ -387,7 +388,7 @@ void GoBottom() {
     contador_anterior = contador_A;
   }
   digitalWrite(pwm2,LOW);
-  digitalWrite(pwm1,LOW); 
+  digitalWrite(pwm1,LOW);
 }
     
 
