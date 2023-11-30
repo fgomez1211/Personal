@@ -1,4 +1,5 @@
-
+//---------------------------------------------------
+//Código para Articulacion 1
 //Declaración de señales del encoder
 byte signalPin_1 =18; //Señal del Canal A del Encoder
 byte signalPin_2 =19; //Señal Index del Encoder
@@ -86,14 +87,14 @@ void setup(){
   Serial.println(" ");
   Serial.println(" ");
   Serial.println("Inicializando Controlador...");
-  Serial.println("Buscando Home.....");
+  /*Serial.println("Buscando Home.....");
   if (EstaEnHome==0) {
      GoBottom();
      findhome();
      }else{
       Serial.println("POS Home Encontrada");
      }
-  delay(100);
+  */
   Serial.println("Controlador listo para recibir comandos....");
 
   //Ahora que ya esta en Home, los contadores se deben colocar a cero
