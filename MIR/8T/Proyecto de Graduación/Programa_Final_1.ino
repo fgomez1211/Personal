@@ -40,7 +40,7 @@ double pasos_1 = 360/relacion_encoder_1;
 
 //Grados de los comandos
 double valorN = 0;
-double Precision = 0.5; //Precisión de llegada = 0.5 grados se puede incrementar la presición disminuyendo este valor
+double Precision = 0.01; //Precisión de llegada = 0.5 grados se puede incrementar la presición disminuyendo este valor
 
 
 //-------------------------------------------------------------------------------------------------------------------------
@@ -83,10 +83,12 @@ void setup(){
   digitalWrite(pwm1,LOW);
 
   //Si la articulación no se encuentra en Home, ejecuta la siguiente rutina.
-  Serial.println("INICIALIZANDO...")
+  //Serial.println("INICIALIZANDO...");
   if (EstaEnHome==0) {
      findhome();
   }
+  Serial.println("Home encontrado");
+  Serial.println("Esperando Instrucciones...");
 
   //Ahora que ya esta en Home, los contadores se deben colocar a cero
   contador_A=0;             
@@ -221,8 +223,8 @@ void GoAngulo() {
   double PrecisionActual = 0;
   double PrecisionInicial = 0;
   double DondeEstoy = pasos_1*contador_A;
-  PrecisionInicial = abs(DondeEstoy - valorN);
-  PrecisionActual = PrecisionInicial;
+  PrecisionInicial = abs(DondeEstoy - valorN);        //Error inicial
+  PrecisionActual = PrecisionInicial;                 //Error final
   if (DondeEstoy < valorN) { //debe ir a la derecha
     m = 1;
   } else { //debe ir a la izquierda
@@ -238,7 +240,8 @@ void GoAngulo() {
       digitalWrite(pwm2,HIGH); //vaya a la izquierda
     }
     PrecisionActual = abs((pasos_1*contador_A) - valorN);
-    Serial.println(PrecisionActual);
+    Serial.println(pasos_1*contador_A);
+    //Serial.println(PrecisionActual);
   }
   Serial.print("Termino");
   //se salio, o porque llego o porque se paso
@@ -349,7 +352,7 @@ void findhome(){
       digitalWrite(pwm2,LOW);
       vuelta=1;
       EstaEnHome = 1;
-      Serial.print("POS Home Encontrada");
+      //Serial.print("POS Home Encontrada");
     }
   }
 }
