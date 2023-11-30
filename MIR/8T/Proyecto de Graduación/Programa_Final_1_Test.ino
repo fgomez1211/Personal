@@ -88,6 +88,7 @@ void setup(){
   Serial.println("Inicializando Controlador...");
   Serial.println("Buscando Home.....");
   if (EstaEnHome==0) {
+     GoBottom();
      findhome();
      }else{
       Serial.println("POS Home Encontrada");
@@ -138,7 +139,8 @@ void loop(){
           } else {
             EstaEnHome = 0;
             }
-            if (EstaEnHome == 0) {              //Si no, entonces ejecuta findhome() y luego envía el comando SiLoHizo
+            if (EstaEnHome == 0) {  
+                GoBottom();            //Si no, entonces ejecuta findhome() y luego envía el comando SiLoHizo
                 findhome();
                 SiLoHizo();
                 }
@@ -360,6 +362,29 @@ void findhome(){
       Serial.println("POS Home Encontrada");
     }
   }
+}
+
+
+void GoBottom() {
+   //asegurar que los motores no se estan moviendo
+  digitalWrite(pwm2,LOW);
+  digitalWrite(pwm1,LOW);
+  int retry=0;
+  int conteocero = 0;
+  contador_anterior= 0;
+  contador_A = 0;    
+  m=1;
+  while (retry < 20) {
+    delay(100);
+    digitalWrite(pwm2,LOW); 
+    digitalWrite(pwm1,HIGH); //vaya a la derecha
+    if(contador_A==contador_anterior && contador_A!=0){
+      retry++;
+    }
+    contador_anterior = contador_A;
+  }
+  digitalWrite(pwm2,LOW);
+  digitalWrite(pwm1,LOW);
 }
     
 

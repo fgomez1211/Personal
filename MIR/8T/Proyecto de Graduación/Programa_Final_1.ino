@@ -21,8 +21,8 @@ int enable1 = 2;      //Enable sentido antihorario
 int enable2 = 3;      //Enable sentido horario
 int pwm1 = 4;         //Activación sentido antihorario
 int pwm2 = 5;         //Activación sentido horario
-int EstoyBusy = 0;    //Variable que indica si la articulación se encuentra ejecutando alguna función
-int m = 1;            //El motor inicia a la derecha, si se desea a izquierda se pone cualquier otro valor
+int EstoyBusy = 0;    //Indica si la articulación se encuentra ejecutando alguna función
+int m = 1;            //Variable que indica el sentido de rotación. Default es horario, -1 es antihorario.
 
 
 //Pasos del encoder y relación mecanica del eje
@@ -35,12 +35,12 @@ double relacion_encoder_1=pasos_encoder*relacion_eje_1;
 
 
 //Factor para el cálculo de la posición instantánea
-double pasos_1 = 360/relacion_encoder_1;
+double pasos_1 = 360/relacion_encoder_1;    //Relación para convvvvvvvvv
 
 
 //Grados de los comandos
 double valorN = 0;
-double Precision = 0.01; //Precisión de llegada = 0.5 grados se puede incrementar la presición disminuyendo este valor
+double Precision = 0.5; //Precisión de llegada = 0.5 grados se puede incrementar la presición disminuyendo este valor
 
 
 //-------------------------------------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ void setup(){
   home = digitalRead(signalPin_3); //Se lee el estado actual de home
   Serial.println("INICIANDO");
 
-  //Validacion si cuando inicia el brazo, se encuentra en Home.
+  //Validacion cuando inicia el brazo, se encuentra en Home.
   if ((home==1) && (index==1)) {    //Ya esta en home
     EstaEnHome = 1; 
   } else {
@@ -83,17 +83,23 @@ void setup(){
   digitalWrite(pwm1,LOW);
 
   //Si la articulación no se encuentra en Home, ejecuta la siguiente rutina.
-  //Serial.println("INICIALIZANDO...");
+  delay(2);
+  Serial.print(" ");
+  Serial.println("Inicializando Controlador...");
+  Serial.println("Buscando Home.....");
   if (EstaEnHome==0) {
+     GoBottom();
      findhome();
-  }
-  Serial.println("Home encontrado");
-  Serial.println("Esperando Instrucciones...");
+     }else{
+      Serial.println("POS Home Encontrada");
+     }
+  delay(100);
+  Serial.println("Controlador listo para recibir comandos....");
 
   //Ahora que ya esta en Home, los contadores se deben colocar a cero
   contador_A=0;             
   contador_anterior = 0;
-  m = 1;                    
+  m = 1;                        
   EstoyBusy = 0;            
 }
 
@@ -101,106 +107,106 @@ void setup(){
 
 
 void loop(){
-  //datos para puerto serial
-                          //Datos provenientes del puerto serial
-  String dataStr;                            //Analiza la longitud de los caracteres de los datos recibidos
-  String comando = "";                            //Alamcena los primeros 3 caracteres de los datos recibidos
-  String valor = "";                              //Valor toma los caracteres numericos de los datos recibidos
+
+  String dataStr;                               //ALMACENA LOS EL DATO SERIAL RECIBIDO
+  String comando = "";                          //ALMACENA LOS PRIMEROS CARACTERES QUE SERAN LA INSTRUCCION
+  String valor = "";                            //ALMACENA EL VALOR NUMERICO RECIBIDO EN EL PUERTO SERIAL
   while (Serial.available()) {
     char incomingByte = Serial.read();
-    dataStr += incomingByte;
+    dataStr += incomingByte;                   //CONCATENACION DE LOS CARACTERES RECIBIDOS.
     delay(2);
-  }
+    }
   if (dataStr.length() > 0 ) {                 //EVALUACION EN EL MONITOR SERIAL
     if (EstoyBusy == 0){
       //Ya ha recibido un comando
-      if (dataStr.length() >= 3) {           //SI EL COMANDO TIENE ALMENOS 3 CARACTERES
-        comando = dataStr.substring(0,3);     //TOMA LOS CARACTERES 0,1,2
-        //Comandos válidos
-        //GOH = Go Home
-        //GOL###.#### = Go Left ###.#### grados
-        //GOR###.#### = Go Right ###.#### grados
-        //REP = Return Position in Degrees
+      if (dataStr.length() >= 3) {            //SI EL COMANDO TIENE ALMENOS 3 CARACTERES
+        comando = dataStr.substring(0,3);     //TOMA LOS CARACTERES PRIMEROS 3 CARACTERES DE dataStr
+        //COMANDOS VALIDOS:
+        //GOH = GO HOME
+        //GOL###.#### = GO LEFT ###.#### GRADOS
+        //GOR###.#### = GO RIGHT ###.#### GRADOS
+        //REP = RETURN POSITION IN DEGREES
+//----------------------------------------------------------------------------------------------------------------------        
         if (comando=="GOH") {                 //SI EL COMANDO RECIBIDO ES GOH
           EstoyBusy = 1;                      //Esta ejecutando una acción
           home = digitalRead(signalPin_3);    //Se lee el estado actual de home
           index = digitalRead(signalPin_2);   //se lee el estado actual de index
-          if ((home==1) && (index==1)) {      //Si ambas señales están en 1, significa que el brazo ya se encuentra en Home
+          if ((home==1) && (index==1)) {      //Si ambas señales están en 1, el brazo ya se encuentra en Home
             //ya esta en home
             EstaEnHome = 1;
             contador_A = 0;
             contador_anterior = 0;
           } else {
             EstaEnHome = 0;
-          }
-          if (EstaEnHome == 0) {              //Si no, entonces ejecuta findhome() y luego envía el comando SiLoHizo
-            findhome();
-            SiLoHizo();
-          }
+            }
+            if (EstaEnHome == 0) {  
+                GoBottom();            //Si no, entonces ejecuta findhome() y luego envía el comando SiLoHizo
+                findhome();
+                SiLoHizo();
+                }
           dataStr = "";                       //Reinicio de variables
           comando = "";
           valor = "";
           valorN = 0;
           EstoyBusy = 0;
         } else {
-          if (comando == "GOL") {                   //SI EL COMANDO RECIBIDO ES GOL
-            EstoyBusy = 1;                          //Esta ejecutando una acción
-            valor = dataStr.substring(3);           //Captura los últimos 3 digitos de los datos enviados
-            valorN = valor.toDouble()*(-1);         //Se pasa a negativo porque va a la izquierda
-            if ((valorN>-130) && (valorN<=0)) {     //Valor válido, si puede ejecutar el comando
-              GoAngulo();
-            } else {
-              NoLoHizo();
-            }
-            dataStr = "";                           //Reinicio de variables
-            comando = "";
-            valor = "";
-            valorN = 0;
-            EstoyBusy = 0;
-          } else {
-            if (comando == "GOR") {                 //SI EL COMANDO RECIBIDO ES GOR
-              EstoyBusy = 1;                        //Esta ejecutando una acción
-              valor = dataStr.substring(3);         //Captura los últimos 3 digitos de los datos enviados
-              valorN = valor.toDouble();            //Se deja positivo porque va a la derecha
-              Serial.println(valorN);
-              if ((valorN<130) && (valorN>=0)) {    //Valor válido, si puede ejecutar el comando
-                GoAngulo();
-              } else {
-                NoLoHizo();
-              }
-              dataStr = "";                         //Reinicio de variables
-              comando = "";
-              valor = "";
-              valorN = 0;
-              EstoyBusy = 0;
-            } else {
-              if (comando == "REP") {
-                // Deme posición actual (positivo derecha, negativo izquierda)
-                EstoyBusy=1;
-                MandePos();
-                dataStr = "";
+//----------------------------------------------------------------------------------------------------------------------
+              if (comando == "GOL") {                   //SI EL COMANDO RECIBIDO ES GOL
+                EstoyBusy = 1;                          //Esta ejecutando una acción
+                valor = dataStr.substring(3);           //ALMACENA LOS CARACTERES EN VALOR A PARTIR DEL TERCERO
+                valorN = valor.toDouble()*(-1);         //Se pasa a negativo porque va a la izquierda
+                if ((valorN>-160) && (valorN<=0)) {     //Valor válido, si puede ejecutar el comando
+                  GoAngulo();
+                } else {
+                  NoLoHizo();
+                  }
+                dataStr = "";                           //Reinicio de variables
                 comando = "";
                 valor = "";
                 valorN = 0;
                 EstoyBusy = 0;
               } else {
-                dataStr = "";
-                comando = "";
-                valor = "";
-                valorN = 0;
-                EstoyBusy = 0;
-              }
-            }
+//----------------------------------------------------------------------------------------------------------------------
+                  if (comando == "GOR") {                 //SI EL COMANDO RECIBIDO ES GOR
+                    EstoyBusy = 1;                        //Esta ejecutando una acción
+                    valor = dataStr.substring(3);         //ALMACENA LOS CARACTERES EN VALOR A PARTIR DEL TERCERO
+                    valorN = valor.toDouble();            //Se deja positivo porque va a la derecha
+                    if ((valorN<130) && (valorN>=0)) {    //Valor válido, si puede ejecutar el comando
+                      GoAngulo();
+                    } else {
+                      NoLoHizo();
+                    }
+                    dataStr = "";                         //Reinicio de variables
+                    comando = "";
+                    valor = "";
+                    valorN = 0;
+                    EstoyBusy = 0;
+                  } else {
+//----------------------------------------------------------------------------------------------------------------------              
+                        if (comando == "REP") {           //SI EL COMANDO RECIBIDO ES REP
+                          EstoyBusy=1;                    //Esta ejecutando una acción
+                          MandePos();                     //EJECUTA FUNCION MandePos()
+                          dataStr = "";                   //Reinicio de variables
+                          comando = "";
+                          valor = "";
+                          valorN = 0;
+                          EstoyBusy = 0;
+                        } else {
+                              dataStr = "";                //Reinicio de variables
+                              comando = "";
+                              valor = "";
+                              valorN = 0;
+                              EstoyBusy = 0;
+                          }
+                    }
+                }
           }
-        }
       }
-    }//Termina, EstoyBusy != 0.
+    }
   }
 }
 
 //-------------------------------------------------------------------------------------------------------------------------
-
-
 //FUNCION PARA ENVIAR LA POSICION FINAL AL MONITOR SERIAL
 void MandePos() {
   Serial.println(pasos_1*contador_A);
@@ -209,45 +215,46 @@ void MandePos() {
 void SiLoHizo() {
   Serial.println("OK");
 }
-//FUNCION PARA INDICAR QUE NO HA EJECTUADO EL COMANDO
+//FUNCION PARA INDICAR QUE NO EJECUTO EL COMANDO
 void NoLoHizo() {
   Serial.println("FAIL");
 }
-
-
 //-------------------------------------------------------------------------------------------------------------------------
-//FUNCION PARA MOVER LA ARTICULACION SEGUN EL COMANDO ENVIADO
+//FUNCION PARA MOVER LA ARTICULACION SEGUN VALOR INGRESADO EN EL MONITOR SERIAL
 //-------------------------------------------------------------------------------------------------------------------------
 void GoAngulo() {
-  //para ir a la izquierda o a la derecha antes de encender el motor saber donde estoy para moverme hacia ese lugar
+  //Para ir a la izquierda o a la derecha antes de encender el motor, 
+  //hay que saber donde está para moverse al lugar hacia ese lugar
   double PrecisionActual = 0;
   double PrecisionInicial = 0;
   double DondeEstoy = pasos_1*contador_A;
-  PrecisionInicial = abs(DondeEstoy - valorN);        //Error inicial
-  PrecisionActual = PrecisionInicial;                 //Error final
-  if (DondeEstoy < valorN) { //debe ir a la derecha
+
+  PrecisionInicial = abs(DondeEstoy - valorN);
+  PrecisionActual = PrecisionInicial;
+
+  if (DondeEstoy < valorN) { //debe ir a la DEBE IR A LA DERECHA
     m = 1;
-  } else { //debe ir a la izquierda
+  } else { //DEBE IR A LA IZQUIERDA
     m = -1;
   }
 
   while ((PrecisionActual > Precision) && (PrecisionActual<=PrecisionInicial)) {
     if(m==1){
       digitalWrite(pwm2,LOW); 
-      digitalWrite(pwm1,HIGH); //vaya a la derecha
+      digitalWrite(pwm1,HIGH); //SE MUEVE A LA IZQUIERDA
     }else{
       digitalWrite(pwm1,LOW); 
-      digitalWrite(pwm2,HIGH); //vaya a la izquierda
+      digitalWrite(pwm2,HIGH); //SE MUEVE A LA DERECHA
     }
     PrecisionActual = abs((pasos_1*contador_A) - valorN);
-    Serial.println(pasos_1*contador_A);
-    //Serial.println(PrecisionActual);
+    Serial.println(PrecisionActual);
   }
-  Serial.print("Termino");
+
+  Serial.print("Posición Alcanzada: ");
   //se salio, o porque llego o porque se paso
-  digitalWrite(pwm2,LOW);
+  digitalWrite(pwm2,LOW);                    //PONE EN BAJO LA SEÑAL DE LOS MOTORES
   digitalWrite(pwm1,LOW);
-  Serial.println(pasos_1*contador_A);  //envie la posicion en la que se quedo
+  Serial.println(pasos_1*contador_A);        //ENVIA LA POSICION FINAL
 }
 //-------------------------------------------------------------------------------------------------------------------------
 
@@ -255,7 +262,7 @@ void GoAngulo() {
 
 //-------------------------------------------------------------------------------------------------------------------------
 //FUNCIONES PARA LOS PINES INTERRUPT
-//-------------------------------------------------------------------------------------------------------------------------
+
 void enc_A(){                               //Función para el conteo de pulsos provenientes del encoder
   if (m==1) {
     contador_A++;
@@ -303,7 +310,7 @@ void findhome(){
   }
   m=1;
   while (home != 1 && vuelta !=1) {
-    delay(100);
+    delay(50);
  /* Serial.print("H,I,C=");
   Serial.print(home);
   Serial.print(",");
@@ -334,6 +341,7 @@ void findhome(){
       conteocero = 0;
     }
     contador_anterior=contador_A;
+
     if(retry>5){
       if(m==1){
         m=-1;
@@ -352,9 +360,32 @@ void findhome(){
       digitalWrite(pwm2,LOW);
       vuelta=1;
       EstaEnHome = 1;
-      //Serial.print("POS Home Encontrada");
+      Serial.println("POS Home Encontrada");
     }
   }
+}
+
+
+void GoBottom() {
+   //asegurar que los motores no se estan moviendo
+  digitalWrite(pwm2,LOW);
+  digitalWrite(pwm1,LOW);
+  int retry=0;
+  int conteocero = 0;
+  contador_anterior= 0;
+  contador_A = 0;    
+  m=1;
+  while (retry < 10) {
+    delay(100);
+    digitalWrite(pwm1,LOW); 
+    digitalWrite(pwm2,HIGH); //vaya a la derecha
+    if(contador_A==contador_anterior && contador_A!=0){
+      retry++;
+    }
+    contador_anterior = contador_A;
+  }
+  digitalWrite(pwm2,LOW);
+  digitalWrite(pwm1,LOW);
 }
     
 
