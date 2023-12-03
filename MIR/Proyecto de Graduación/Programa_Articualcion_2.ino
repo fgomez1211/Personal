@@ -1,6 +1,5 @@
 //---------------------------------------------------
 //Código para Articulacion 2
-
 //Declaración de señales del encoder
 byte signalPin_1 =18; //Señal del Canal A del Encoder
 byte signalPin_2 =19; //Señal indexx del Encoder
